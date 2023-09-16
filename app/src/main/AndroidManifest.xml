@@ -13,6 +13,12 @@
         android:theme="@style/Theme.JSPM"
         tools:targetApi="31">
         <activity
+            android:name="Login.ChildLogin"
+            android:exported="false" />
+        <activity
+            android:name="Login.ParentLogin"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
