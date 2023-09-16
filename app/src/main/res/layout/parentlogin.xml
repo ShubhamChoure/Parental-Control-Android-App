@@ -40,7 +40,8 @@
             android:layout_weight="2"
             android:id="@+id/PassText"
             android:visibility="gone"
-            ></TextView>
+            >
+        </TextView>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -48,11 +49,13 @@
             android:id="@+id/LoginPassETxt"
             android:layout_weight="1"
             android:visibility="gone"
-            ></EditText>
+            >
+        </EditText>
     </LinearLayout>
     <Button
         android:id="@+id/continueBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Continue"></Button>
+        android:text="Continue">
+    </Button>
     </LinearLayout>
