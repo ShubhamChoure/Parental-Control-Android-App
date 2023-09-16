@@ -1,19 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="#F3F3F3">
+       <TextView
+           android:textSize="25dp"
+           android:layout_marginRight="15dp"
+           android:layout_marginLeft="15dp"
+           android:layout_marginTop="25dp"
+           android:textColor="@color/black"
+           android:textStyle="bold"
+           android:padding="10dp"
+           android:text="Who uses this devices?"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </TextView>
+       <com.google.android.material.imageview.ShapeableImageView
+           app:shapeAppearanceOverlay="@style/roundimage"
+           android:id="@+id/parentlogin"
+           android:src="@drawable/parentfinal"
+           android:scaleType="fitCenter"
+           android:adjustViewBounds="true"
+           android:paddingLeft="25dp"
+           android:paddingRight="25dp"
+           android:paddingTop="25dp"
+           android:paddingBottom="10dp"
+           android:layout_gravity="center"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </com.google.android.material.imageview.ShapeableImageView>
+       <com.google.android.material.imageview.ShapeableImageView
+           android:layout_gravity="center"
+           android:paddingTop="10dp"
+           android:paddingLeft="25dp"
+           android:paddingBottom="25dp"
+           android:paddingRight="25dp"
+           android:id="@+id/childlogin"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:adjustViewBounds="true"
+           android:scaleType="fitCenter"
+           android:src="@drawable/childfinal"
+           app:shapeAppearanceOverlay="@style/roundimage">
+       </com.google.android.material.imageview.ShapeableImageView>
 
-       <EditText 
-           android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/shubham"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
