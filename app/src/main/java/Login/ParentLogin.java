@@ -85,7 +85,7 @@ public class ParentLogin extends AppCompatActivity {
                  }).addOnFailureListener(new OnFailureListener() {
                      @Override
                      public void onFailure(@NonNull Exception e) {
-                         Toast.makeText(ParentLogin.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                         Toast.makeText(ParentLogin.this, "something wemt wrong", Toast.LENGTH_SHORT).show();
                      }
                  });
              }
