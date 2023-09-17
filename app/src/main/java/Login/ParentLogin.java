@@ -1,8 +1,13 @@
 package Login;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,50 +15,95 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jspm.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import HomeActivity.HomeActivity;
+
 public class ParentLogin extends AppCompatActivity {
     EditText mailEDtxt,passEDtxt;
-    TextView passTV;
+    TextView passTV,signUpTV;
     Button continueBtn;
-    FirebaseFirestore db;
-    CollectionReference FireRef;
-    String mailStr;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    String mailStr,passStr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parentlogin);
         init();
 
-       continueBtn.setOnClickListener(new View.OnClickListener() {
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             if(TextUtils.isEmpty(mailEDtxt.getText().toString()))
+             {
+                 mailEDtxt.setError("Please Enter Mail");
+             } else if (TextUtils.isEmpty(passEDtxt.getText().toString())) {
+                 passEDtxt.setError("Please Enter Password");
+             }
+             else{
+                 mailStr = mailEDtxt.getText().toString().trim();
+                 passStr = passEDtxt.getText().toString().trim();
+                 mAuth.signInWithEmailAndPassword(mailStr,passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if(task.isSuccessful())
+                         {
+                             currentUser = mAuth.getCurrentUser();
+                             if(currentUser.isEmailVerified())
+                             {
+                                 Intent homeIntent = new Intent(ParentLogin.this, HomeActivity.class);
+                                 startActivity(homeIntent);
+                             }else {
+                                 AlertDialog.Builder builder = new AlertDialog.Builder(ParentLogin.this);
+                                 builder.setTitle("Unverified E-Mail");
+                                 builder.setMessage("Please Check Your Inbox");
+                             }
+                         }else{
+                             AlertDialog.Builder builder = new AlertDialog.Builder(ParentLogin.this);
+                             builder.setTitle("LogIn Failed");
+                             builder.setMessage("E-Mail or Password Incorrect");
+                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                 @Override
+                                 public void onClick(DialogInterface dialog, int which) {
+                                     dialog.cancel();
+                                 }
+                             });
+                             builder.show();
+                         }
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         Toast.makeText(ParentLogin.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                     }
+                 });
+             }
+            }
+        });
+
+       signUpTV.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               mailStr = mailEDtxt.getText().toString();
-           FireRef = db.collection("Accounts");
-           FireRef.whereEqualTo("Mail",mailStr).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-               @Override
-               public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                  int size = queryDocumentSnapshots.getDocuments().size();
-                  if(size!=0) {
-                      passTV.setVisibility(passTV.VISIBLE);
-                      passEDtxt.setVisibility(passEDtxt.VISIBLE);
-                      continueBtn.setText("LogIn");
-                  }
-                  else{
-                      Toast.makeText(ParentLogin.this, "Account not exist", Toast.LENGTH_SHORT).show();
-                  }
-               }
-           });
+               Intent parentSignUpIntent = new Intent(ParentLogin.this, ParentSignUp.class);
+               startActivity(parentSignUpIntent);
            }
        });
     }
     void init()
     {
-        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        signUpTV = findViewById(R.id.signupTV);
         passTV = findViewById(R.id.PassText);
       mailEDtxt = findViewById(R.id.LoginMailETxt);
       continueBtn = findViewById(R.id.continueBtn);
