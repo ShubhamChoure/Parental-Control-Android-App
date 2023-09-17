@@ -64,7 +64,7 @@ public class ParentLogin extends AppCompatActivity {
                              {
                                  Intent homeIntent = new Intent(ParentLogin.this, HomeActivity.class);
                                  startActivity(homeIntent);
-                             }else {
+                             }else if(currentUser.isEmailVerified()==false) {
                                  AlertDialog.Builder builder = new AlertDialog.Builder(ParentLogin.this);
                                  builder.setTitle("Unverified E-Mail");
                                  builder.setMessage("Please Check Your Inbox");
