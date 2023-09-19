@@ -114,11 +114,11 @@ public class ParentSignUp extends AppCompatActivity {
         {
             parentAccount = new ParentAccount();
             db = FirebaseFirestore.getInstance();
-         mAuth = FirebaseAuth.getInstance();
-         RegistedFlg = false;
-         signUpBtn = findViewById(R.id.SignUpBtn);
-         mailETxt = findViewById(R.id.SignUpMailETxt);
-         passETxt = findViewById(R.id.SignUpPassETxt);
+            mAuth = FirebaseAuth.getInstance();
+            RegistedFlg = false;
+            signUpBtn = findViewById(R.id.SignUpBtn);
+            mailETxt = findViewById(R.id.SignUpMailETxt);
+            passETxt = findViewById(R.id.SignUpPassETxt);
         }
         void setRelation(ParentAccount parentAccount)
         {

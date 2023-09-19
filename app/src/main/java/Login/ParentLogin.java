@@ -104,9 +104,8 @@ public class ParentLogin extends AppCompatActivity {
     {
         mAuth = FirebaseAuth.getInstance();
         signUpTV = findViewById(R.id.signupTV);
-        passTV = findViewById(R.id.PassText);
-      mailEDtxt = findViewById(R.id.LoginMailETxt);
-      continueBtn = findViewById(R.id.continueBtn);
-      passEDtxt = findViewById(R.id.LoginPassETxt);
+        mailEDtxt = findViewById(R.id.LoginMailETxt);
+        continueBtn = findViewById(R.id.continueBtn);
+        passEDtxt = findViewById(R.id.LoginPassETxt);
     }
 }

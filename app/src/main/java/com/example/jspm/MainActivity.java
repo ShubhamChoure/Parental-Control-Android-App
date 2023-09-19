@@ -2,6 +2,7 @@ package com.example.jspm;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +34,6 @@ FirebaseAuth mAuth;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-
         parentIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
