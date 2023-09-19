@@ -1,121 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="Login.ParentLogin">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:src="@drawable/pa">
-        </ImageView>
-    </FrameLayout>
-    <EditText
-        android:background="@drawable/editbutton"
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:drawableLeft="@drawable/baseline_email_24"
-        android:hint="   Enter E-mail"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:padding="15dp"
-        android:textColor="@color/black"
-        android:id="@+id/LoginMailETxt"
-        android:layout_weight="1">
-    </EditText>
+        android:orientation="vertical"
+        tools:context="Login.ParentLogin">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-            app:srcCompat="@drawable/baseline_lock_24"
-            tools:layout_editor_absoluteY="64dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pa"></ImageView>
+        </FrameLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
+        <EditText
+            android:id="@+id/LoginMailETxt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:passwordToggleEnabled="true">
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/editbutton"
+            android:drawableLeft="@drawable/baseline_email_24"
+            android:hint="   Enter E-mail"
+            android:padding="15dp"
+            android:textColor="@color/black"></EditText>
 
-            <EditText
-                android:id="@+id/LoginPassETxt"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="25dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="358dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+                app:layout_constraintStart_toStartOf="@+id/textInputLayout"
+                app:layout_constraintTop_toTopOf="@+id/textInputLayout"
+                app:srcCompat="@drawable/baseline_lock_24" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/LoginPassETxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/editbutton"
+                    android:drawableLeft="@drawable/baseline_lock_24"
+                    android:hint="         Enter Password"
+                    android:inputType="textPassword"
+                    android:padding="15dp"
+                    android:textColor="@color/black"></EditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/ForgetTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:gravity="right"
+            android:paddingRight="15dp"
+            android:text="Forget Password ?"
+            android:textColor="#03A9F4"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,SpUsage"></TextView>
+
+        <Button
+            android:id="@+id/continueBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/button_desing"
+            android:padding="15dp"
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            tools:ignore="HardcodedText,SpUsage"></Button>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/editbutton"
-                android:drawableLeft="@drawable/baseline_lock_24"
-                android:hint="         Enter Password"
-                android:inputType="textPassword"
-                android:padding="15dp"
-                android:textColor="@color/black"></EditText>
+                android:layout_weight="2"
+                android:gravity="right"
+                android:text="New User ?"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SpUsage"></TextView>
 
-            `
-
-        </com.google.android.material.textfield.TextInputLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <Button
-        android:id="@+id/continueBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/button_desing"
-        android:padding="15dp"
-        android:text="LOGIN"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        tools:ignore="HardcodedText,SpUsage">
-    </Button>
-
-    <TextView
-        android:id="@+id/Forget"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:text="Forget"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText,SpUsage">
-    </TextView>
-
-    <TextView
-        android:id="@+id/signupTV"
-        android:text="New User ? Signup Here !"
-        android:gravity="center"
-        android:layout_marginTop="15dp"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="HardcodedText,SpUsage">
-    </TextView>
+            <TextView
+                android:id="@+id/signupTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="2"
+                android:gravity="left"
+                android:text=" Signup Here !"
+                android:textColor="#03A9F4"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SpUsage"></TextView>
+        </LinearLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
 </ScrollView>
