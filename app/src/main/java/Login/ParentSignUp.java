@@ -37,7 +37,8 @@ import Models.ParentAccount;
 public class ParentSignUp extends AppCompatActivity {
 
     Button signUpBtn;
-    EditText mailETxt,passETxt;
+    TextView logInTV;
+    EditText mailETxt,passETxt,passREETxt;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     String mailStr,passStr;
@@ -58,21 +59,29 @@ public class ParentSignUp extends AppCompatActivity {
                         mailETxt.setError("Please Enter Your Mail");
                     } else if (TextUtils.isEmpty(passETxt.getText().toString())) {
                         passETxt.setError("Please Set Password");
-                    } else {
-                        mailStr = mailETxt.getText().toString().trim();
-                        passStr = passETxt.getText().toString().trim();
-                        mAuth.createUserWithEmailAndPassword(mailStr, passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(ParentSignUp.this, "Registed", Toast.LENGTH_SHORT).show();
-                                    signUpBtn.setText("Verify");
-                                    RegistedFlg = true;
-                                } else {
-                                    Toast.makeText(ParentSignUp.this, "Mail is Already Registed", Toast.LENGTH_SHORT).show();
+                    } else if(TextUtils.isEmpty(passREETxt.getText().toString()))
+                    {
+                        passREETxt.setError("Please Re-Enter The Password");
+                    }
+                    else if(passETxt.getText().toString().trim().equals(passREETxt.getText().toString().trim())){
+                            mailStr = mailETxt.getText().toString().trim();
+                            passStr = passETxt.getText().toString().trim();
+                            mAuth.createUserWithEmailAndPassword(mailStr, passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(ParentSignUp.this, "Registed", Toast.LENGTH_SHORT).show();
+                                        signUpBtn.setText("Verify");
+                                        RegistedFlg = true;
+                                    } else {
+                                        Toast.makeText(ParentSignUp.this, "Mail is Already Registed", Toast.LENGTH_SHORT).show();
+                                        Log.d("shubham",task.getException().toString());
+                                    }
                                 }
-                            }
-                        });
+                            });
+                    }
+                    else{
+                        passREETxt.setError("Password Not Match");
                     }
                 }
                 else if(RegistedFlg==true)
@@ -97,8 +106,6 @@ public class ParentSignUp extends AppCompatActivity {
                                         parentAccount.setMail(mailStr);
                                         setRelation(parentAccount);
                                         dialog.cancel();
-                                        Intent LogInIntent = new Intent(ParentSignUp.this,ParentLogin.class);
-                                        startActivity(LogInIntent);
                                         finish();
                                     }
                                 });
@@ -107,6 +114,12 @@ public class ParentSignUp extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+        logInTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
         }
@@ -119,6 +132,8 @@ public class ParentSignUp extends AppCompatActivity {
             signUpBtn = findViewById(R.id.SignUpBtn);
             mailETxt = findViewById(R.id.SignUpMailETxt);
             passETxt = findViewById(R.id.SignUpPassETxt);
+            passREETxt = findViewById(R.id.SignUpREPassETxt);
+            logInTV = findViewById(R.id.loginTV);
         }
         void setRelation(ParentAccount parentAccount)
         {
