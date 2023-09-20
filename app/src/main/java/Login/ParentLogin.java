@@ -31,7 +31,7 @@ import HomeActivity.HomeActivity;
 
 public class ParentLogin extends AppCompatActivity {
     EditText mailEDtxt,passEDtxt;
-    TextView passTV,signUpTV;
+    TextView forgetTV,signUpTV;
     Button continueBtn;
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -41,10 +41,10 @@ public class ParentLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parentlogin);
         init();
-
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
              if(TextUtils.isEmpty(mailEDtxt.getText().toString()))
              {
                  mailEDtxt.setError("Please Enter Mail");
@@ -99,11 +99,19 @@ public class ParentLogin extends AppCompatActivity {
                startActivity(parentSignUpIntent);
            }
        });
+       forgetTV.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent forgetIntent = new Intent(ParentLogin.this,ForgetPassword.class);
+               startActivity(forgetIntent);
+           }
+       });
     }
     void init()
     {
         mAuth = FirebaseAuth.getInstance();
         signUpTV = findViewById(R.id.signupTV);
+        forgetTV = findViewById(R.id.ForgetTV);
         mailEDtxt = findViewById(R.id.LoginMailETxt);
         continueBtn = findViewById(R.id.continueBtn);
         passEDtxt = findViewById(R.id.LoginPassETxt);
