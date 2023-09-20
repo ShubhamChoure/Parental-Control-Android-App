@@ -15,6 +15,9 @@
         android:theme="@style/Theme.JSPM"
         tools:targetApi="31">
         <activity
+            android:name="Login.ForgetPassword"
+            android:exported="false" />
+        <activity
             android:name="HomeActivity.HomeActivity"
             android:exported="false" />
         <activity
