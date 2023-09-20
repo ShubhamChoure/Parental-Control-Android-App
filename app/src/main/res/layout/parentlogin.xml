@@ -17,8 +17,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pa"></ImageView>
+                android:layout_height="356dp"
+                android:src="@drawable/parentlogin">
+            </ImageView>
         </FrameLayout>
 
         <EditText
@@ -33,7 +34,9 @@
             android:drawableLeft="@drawable/baseline_email_24"
             android:hint="   Enter E-mail"
             android:padding="15dp"
-            android:textColor="@color/black"></EditText>
+            android:textColor="@color/black"
+            tools:ignore="InefficientWeight">
+        </EditText>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -76,10 +79,11 @@
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
                     android:drawableLeft="@drawable/baseline_lock_24"
-                    android:hint="         Enter Password"
+                    android:hint="        Enter Password"
                     android:inputType="textPassword"
                     android:padding="15dp"
-                    android:textColor="@color/black"></EditText>
+                    android:textColor="@color/black"
+                    tools:ignore="SpeakableTextPresentCheck"></EditText>
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -88,28 +92,31 @@
             android:id="@+id/ForgetTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="4dp"
             android:gravity="right"
             android:paddingRight="15dp"
             android:text="Forget Password ?"
             android:textColor="#03A9F4"
             android:textSize="16dp"
             android:textStyle="bold"
-            tools:ignore="HardcodedText,SpUsage"></TextView>
+            tools:ignore="HardcodedText,SpUsage">
+        </TextView>
 
         <Button
+            android:layout_gravity="center"
             android:id="@+id/continueBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/button_desing"
+            android:background="@drawable/loginbutton"
             android:padding="15dp"
-            android:text="LOGIN"
             android:textColor="@color/white"
             android:textSize="20dp"
-            tools:ignore="HardcodedText,SpUsage"></Button>
+            android:text="Login"
+            tools:ignore="HardcodedText,SpUsage">
+        </Button>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,7 +132,8 @@
                 android:text="New User ?"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                tools:ignore="HardcodedText,SpUsage"></TextView>
+                tools:ignore="HardcodedText,SpUsage">
+            </TextView>
 
             <TextView
                 android:id="@+id/signupTV"
@@ -138,9 +146,8 @@
                 android:textColor="#03A9F4"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                tools:ignore="HardcodedText,SpUsage"></TextView>
+                tools:ignore="HardcodedText,SpUsage">
+            </TextView>
         </LinearLayout>
-
-
     </LinearLayout>
 </ScrollView>
