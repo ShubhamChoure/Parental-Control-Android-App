@@ -10,18 +10,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="Login.ParentLogin">
-
         <FrameLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <ImageView
+                android:scaleType="fitStart"
                 android:layout_width="match_parent"
-                android:layout_height="334dp"
+                android:layout_height="wrap_content"
                 android:src="@drawable/parenttv">
             </ImageView>
         </FrameLayout>
-
         <EditText
             android:id="@+id/LoginMailETxt"
             android:layout_width="match_parent"
@@ -90,6 +89,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/ForgetTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
