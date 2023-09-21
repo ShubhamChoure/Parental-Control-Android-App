@@ -143,7 +143,7 @@ public class ParentSignUp extends AppCompatActivity {
             db.collection("Relation").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(ParentSignUp.this, "Mail Added To FireStore", Toast.LENGTH_SHORT).show();
+                Log.d("tag","Parent mail added to firestore");
             }
         });
         }
