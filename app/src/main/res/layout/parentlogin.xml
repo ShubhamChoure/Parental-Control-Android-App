@@ -5,39 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:scaleType="fitXY"
-            android:src="@drawable/parenttv"
-            android:layout_height="400dp"></ImageView>
-        <com.google.android.material.textfield.TextInputLayout
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/LoginMailETxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/editbutton"
-            android:drawableLeft="@drawable/baseline_person_pin_24"
-            android:hint="Enter E-mail"
-            android:padding="15dp"
-            android:textColor="@color/black"
-            tools:ignore="InefficientWeight">
-        </com.google.android.material.textfield.TextInputEditText>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@drawable/parenttv"
+                android:layout_height="400dp">
+            </ImageView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/LoginMailETxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/editbutton"
+                    android:drawableLeft="@drawable/baseline_person_pin_24"
+                    android:hint="Enter E-mail"
+                    android:padding="15dp"
+                    android:textColor="@color/black"
+                    tools:ignore="InefficientWeight">
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/PassTextLayout"
                 android:layout_width="match_parent"
@@ -62,76 +63,76 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:layout_weight="4"
-            android:id="@+id/ForgetTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="right"
-            android:paddingRight="15dp"
-            android:text="Forget Password ?"
-            android:textColor="#03A9F4"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText,SpUsage">
-        </TextView>
-        <Button
-            android:layout_gravity="center"
-            android:id="@+id/continueBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/button_desing"
-            android:padding="15dp"
-            android:text="Login"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            tools:ignore="HardcodedText,SpUsage">
-        </Button>
-        <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:lottie_rawRes="@raw/button_loading_animation"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            android:visibility="gone"
-            android:id="@+id/btnLoading">
-        </com.airbnb.lottie.LottieAnimationView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
             <TextView
+                android:layout_weight="4"
+                android:id="@+id/ForgetTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_weight="2"
+                android:layout_marginTop="8dp"
                 android:gravity="right"
-                android:text="New User ?"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText,SpUsage">
-            </TextView>
-
-            <TextView
-                android:id="@+id/signupTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_weight="2"
-                android:gravity="left"
-                android:text=" Signup Here !"
+                android:paddingRight="15dp"
+                android:text="Forget Password ?"
                 android:textColor="#03A9F4"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText,SpUsage">
             </TextView>
+            <Button
+                android:layout_gravity="center"
+                android:id="@+id/continueBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_desing"
+                android:padding="15dp"
+                android:text="Login"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                tools:ignore="HardcodedText,SpUsage">
+            </Button>
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:lottie_rawRes="@raw/button_loading_animation"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:visibility="gone"
+                android:id="@+id/btnLoading">
+            </com.airbnb.lottie.LottieAnimationView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="New User ?"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText,SpUsage">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/signupTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="2"
+                    android:gravity="left"
+                    android:text=" Signup Here !"
+                    android:textColor="#03A9F4"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText,SpUsage">
+                </TextView>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
 </LinearLayout>
