@@ -52,8 +52,12 @@ public class ParentLogin extends AppCompatActivity {
                 btnLoadAni.setVisibility(btnLoadAni.VISIBLE);
              if(TextUtils.isEmpty(mailEDtxt.getText().toString()))
              {
+                 continueBtn.setVisibility(continueBtn.VISIBLE);
+                 btnLoadAni.setVisibility(btnLoadAni.GONE);
                  mailEDtxt.setError("Please Enter Mail");
              } else if (TextUtils.isEmpty(passEDtxt.getText().toString())) {
+                 continueBtn.setVisibility(continueBtn.VISIBLE);
+                 btnLoadAni.setVisibility(btnLoadAni.GONE);
                  passEDtxt.setError("Please Enter Password");
              }
              else{
