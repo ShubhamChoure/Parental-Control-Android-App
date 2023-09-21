@@ -17,7 +17,7 @@
             <ImageView
                 android:scaleType="fitStart"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="400dp"
                 android:src="@drawable/parenttv">
             </ImageView>
         </FrameLayout>
@@ -30,8 +30,8 @@
             android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:background="@drawable/editbutton"
-            android:drawableLeft="@drawable/baseline_person_pin_24"
-            android:hint="Enter E-mail"
+            android:drawableLeft="@drawable/baseline_email_24"
+            android:hint="  Enter E-mail"
             android:padding="15dp"
             android:textColor="@color/black"
             tools:ignore="InefficientWeight">
