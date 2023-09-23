@@ -5,20 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Login.ParentSignUp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#445FD2">
 
-    <FrameLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="254dp">
-        <ImageView
-            android:src="@drawable/up"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="ContentDescription">
-        </ImageView>
-    </FrameLayout>
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:layout_height="wrap_content"
+        android:src="@drawable/singupupper">
+    </ImageView>
     <TextView
-        android:textColor="#0D65F7"
+        android:textColor="@color/white"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="120dp"
@@ -29,10 +27,15 @@
         android:layout_height="wrap_content"
         tools:ignore="HardcodedText,RtlHardcoded,SpUsage">
     </TextView>
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/white">
+    <com.google.android.material.textfield.TextInputEditText
+        android:textStyle="italic"
         android:id="@+id/SignUpMailETxt"
-        android:drawableLeft="@drawable/baseline_email_24"
-        android:background="@drawable/editbutton"
+        android:drawableLeft="@drawable/baseline_email_id"
+        android:background="@drawable/singupedittext"
         android:padding="15dp"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="15dp"
@@ -41,80 +44,90 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields">
-    </EditText>
-    <EditText
-        android:id="@+id/SignUpPassETxt"
-        android:drawableLeft="@drawable/baseline_lock_24"
-        android:background="@drawable/editbutton"
-        android:padding="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:hint="   Password "
+    </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields">
-    </EditText>
-    <EditText
-        android:id="@+id/SignUpREPassETxt"
-        android:drawableLeft="@drawable/baseline_lock_24"
-        android:background="@drawable/editbutton"
-        android:padding="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:hint="   Re-enter Password "
+        app:passwordToggleEnabled="true"
+        android:textColorHint="@color/white">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/SignUpPassETxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/singupedittext"
+            android:drawableStart="@drawable/baseline_lock_"
+            android:hint="  Enter Password"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            tools:ignore="SpeakableTextPresentCheck">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields">
-    </EditText>
+        app:passwordToggleEnabled="true"
+        android:textColorHint="@color/white">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/SignUpREPassETxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/singupedittext"
+            android:drawableStart="@drawable/baseline_lock_"
+            android:hint="  Confirm Password"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            tools:ignore="SpeakableTextPresentCheck">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
     <Button
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         android:id="@+id/SignUpBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/button_desing"
+        android:background="@drawable/singupbutton"
         android:padding="15dp"
         android:text="SIGN UP"
-        android:textColor="@color/white"
+        android:textColor="#445FD2"
         android:textSize="20dp"
         tools:ignore="HardcodedText,SpUsage">
     </Button>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
-            android:gravity="right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_weight="2"
-            android:text="Already have an account?"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText,SpUsage">
-        </TextView>
-
-        <TextView
-            android:gravity="left"
             android:id="@+id/loginTV"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="2"
-            android:text=" Login Here !"
-            android:textColor="#03A9F4"
+            android:gravity="center"
+            android:text="Already have an account? Login Here !"
             android:textSize="16dp"
             android:textStyle="bold"
             tools:ignore="HardcodedText,SpUsage">
         </TextView>
     </LinearLayout>
-
-
 </LinearLayout>

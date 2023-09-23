@@ -17,7 +17,7 @@
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 android:src="@drawable/parenttv"
-                android:layout_height="400dp">
+                android:layout_height="350dp">
             </ImageView>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -32,9 +32,10 @@
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
-                    android:drawableLeft="@drawable/baseline_person_pin_24"
-                    android:hint="Enter E-mail"
+                    android:drawableLeft="@drawable/baseline_email_24"
+                    android:hint="  Enter E-mail"
                     android:padding="15dp"
+                    android:textStyle="italic"
                     android:textColor="@color/black"
                     tools:ignore="InefficientWeight">
                 </com.google.android.material.textfield.TextInputEditText>
@@ -46,19 +47,21 @@
                 app:passwordToggleEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/LoginPassETxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="15dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:padding="15dp"
                     android:background="@drawable/editbutton"
                     android:drawableStart="@drawable/baseline_lock_24"
-                    android:hint="Enter Password"
+                    android:hint="  Enter Password"
                     android:inputType="textPassword"
+                    android:padding="15dp"
                     android:textColor="@color/black"
-                    tools:ignore="SpeakableTextPresentCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
+                    android:textStyle="italic"
+                    tools:ignore="SpeakableTextPresentCheck">
                 </com.google.android.material.textfield.TextInputEditText>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +71,8 @@
                 android:id="@+id/ForgetTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="right"
                 android:paddingRight="15dp"
                 android:text="Forget Password ?"
