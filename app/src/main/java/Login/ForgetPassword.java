@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.jspm.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,7 +23,7 @@ public class ForgetPassword extends AppCompatActivity {
     EditText mailETxt;
     Button submitBtn;
     FirebaseAuth mAuth;
-    ProgressDialog progressDialog;
+    LottieAnimationView btnLoading;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,17 +33,19 @@ public class ForgetPassword extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.setTitle("Sending Mail");
-                progressDialog.setMessage("Please Wait");
-                progressDialog.show();
+                submitBtn.setVisibility(submitBtn.GONE);
+                btnLoading.setVisibility(btnLoading.VISIBLE);
                 if(TextUtils.isEmpty(mailETxt.getText().toString()))
                 {
+                    submitBtn.setVisibility(submitBtn.VISIBLE);
+                    btnLoading.setVisibility(btnLoading.GONE);
                     mailETxt.setError("Please Enter E-Mail");
                 } else{
                     mAuth.sendPasswordResetEmail(mailETxt.getText().toString().trim()).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                         progressDialog.cancel();
+                            submitBtn.setVisibility(submitBtn.VISIBLE);
+                            btnLoading.setVisibility(btnLoading.GONE);
                             AlertDialog.Builder builder = new AlertDialog.Builder(ForgetPassword.this);
                             builder.setTitle("Verification Mail Sent");
                             builder.setMessage("Please check your InBox");
@@ -58,7 +61,8 @@ public class ForgetPassword extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressDialog.cancel();
+                            submitBtn.setVisibility(submitBtn.VISIBLE);
+                            btnLoading.setVisibility(btnLoading.GONE);
                             mailETxt.setError("Mail is not valid");
                         }
                     });
@@ -71,6 +75,6 @@ public class ForgetPassword extends AppCompatActivity {
         mailETxt = findViewById(R.id.ForgetMailETxt);
         submitBtn = findViewById(R.id.submitBtn);
         mAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(ForgetPassword.this);
+        btnLoading = findViewById(R.id.btnLoading);
     }
 }
