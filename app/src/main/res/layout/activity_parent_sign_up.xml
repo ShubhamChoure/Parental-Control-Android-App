@@ -111,6 +111,15 @@
         android:textSize="20dp"
         tools:ignore="HardcodedText,SpUsage">
     </Button>
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:lottie_rawRes="@raw/button_loading_animation"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        android:id="@+id/btnLoading">
+    </com.airbnb.lottie.LottieAnimationView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
