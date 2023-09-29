@@ -15,7 +15,16 @@
         android:theme="@style/Theme.JSPM"
         tools:targetApi="31">
         <activity
-            android:name="Login.ForgetPassword"
+            android:name="HomeActivity.ChildeHomeActivity.ChildHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name="Login.Childe.ChildSignUp"
+            android:exported="false" />
+        <activity
+            android:name="Login.Childe.ChildForgetPassword"
+            android:exported="false" />
+        <activity
+            android:name="Login.ParentForgetPassword"
             android:exported="false" />
         <activity
             android:name="HomeActivity.HomeActivity"
@@ -24,7 +33,7 @@
             android:name="Login.ParentSignUp"
             android:exported="false" />
         <activity
-            android:name="Login.ChildLogin"
+            android:name="Login.Childe.ChildLogin"
             android:exported="false" />
         <activity
             android:name="Login.ParentLogin"

@@ -1,11 +1,8 @@
 package Login;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,7 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ForgetPassword extends AppCompatActivity {
+public class ParentForgetPassword extends AppCompatActivity {
 
     EditText mailETxt;
     Button submitBtn;
@@ -53,7 +50,7 @@ public class ForgetPassword extends AppCompatActivity {
                             submitBtn.setVisibility(submitBtn.VISIBLE);
                             btnLoading.setVisibility(btnLoading.GONE);
                             lottiebtn.setText("OK");
-                            mailSentAnime = new LottieDialog(ForgetPassword.this).setAnimation(R.raw.mailsent).setAutoPlayAnimation(true).setAnimationRepeatCount(0).addActionButton(lottiebtn).setTitle("Mail Sent").setMessage("Please check your In-Box");
+                            mailSentAnime = new LottieDialog(ParentForgetPassword.this).setAnimation(R.raw.mailsent).setAutoPlayAnimation(true).setAnimationRepeatCount(0).addActionButton(lottiebtn).setTitle("Mail Sent").setMessage("Please check your In-Box");
                             mailSentAnime.show();
                             mailDialog.dismiss();
                         }
@@ -83,7 +80,7 @@ public class ForgetPassword extends AppCompatActivity {
         mailETxt = findViewById(R.id.ForgetMailETxt);
         submitBtn = findViewById(R.id.submitBtn);
         mAuth = FirebaseAuth.getInstance();
-        mailDialog = new LottieDialog(ForgetPassword.this);
-        lottiebtn = new Button(ForgetPassword.this);
+        mailDialog = new LottieDialog(ParentForgetPassword.this);
+        lottiebtn = new Button(ParentForgetPassword.this);
     }
 }
