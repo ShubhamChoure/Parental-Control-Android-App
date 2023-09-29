@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Login.ParentSignUp"
+    tools:context="Login.Childe.ChildSignUp"
     android:orientation="vertical"
     android:background="#445FD2">
 
@@ -31,20 +31,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/white">
-    <com.google.android.material.textfield.TextInputEditText
-        android:textStyle="italic"
-        android:id="@+id/SignUpMailETxt"
-        android:drawableLeft="@drawable/baseline_email_id"
-        android:background="@drawable/singupedittext"
-        android:padding="15dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:hint="  Email ID"
+        <com.google.android.material.textfield.TextInputEditText
+            android:textStyle="italic"
+            android:id="@+id/SignUpMailETxt"
+            android:drawableLeft="@drawable/baseline_email_id"
+            android:background="@drawable/singupedittext"
+            android:padding="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:hint="  Email ID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields">
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields">
-    </com.google.android.material.textfield.TextInputEditText>
+        android:textColorHint="@color/white">
+        <com.google.android.material.textfield.TextInputEditText
+            android:textStyle="italic"
+            android:id="@+id/ParentMailETxt"
+            android:drawableLeft="@drawable/baseline_account_circle_24"
+            android:background="@drawable/singupedittext"
+            android:padding="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:hint="  Parent Mail ID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields">
+        </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
