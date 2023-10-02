@@ -13,13 +13,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="410sp"
+                android:layout_height="390sp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
-                android:src="@drawable/parenttv"
-                android:layout_height="350dp">
+                android:src="@drawable/chlid_loginpages">
+
             </ImageView>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
