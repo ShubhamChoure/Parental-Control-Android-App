@@ -112,6 +112,10 @@ public class ChildSignUp extends AppCompatActivity {
 
                                     Toast.makeText(ChildSignUp.this, "Registed", Toast.LENGTH_SHORT).show();
                                     signUpBtn.setText("Verify");
+                                    //below 2 line code will store the data in firebase firestore
+                                    setUserID();
+                                    setRelation(parentMailStr);
+                                    //
                                     RegistedFlg = true;
                                     signUpBtn.setVisibility(View.VISIBLE);
                                     btnLoadingAnime.setVisibility(View.GONE);
@@ -125,10 +129,6 @@ public class ChildSignUp extends AppCompatActivity {
                                             public void onClick(DialogInterface dialog, int which) {
 
                                                 signUpBtn.setText("Verify");
-                                                //below 2 line code will store the data in firebase firestore
-                                                setUserID();
-                                                setRelation(parentMailStr);
-                                                //
                                                 RegistedFlg = true;
                                                 signUpBtn.setVisibility(View.VISIBLE);
                                                 btnLoadingAnime.setVisibility(View.GONE);
