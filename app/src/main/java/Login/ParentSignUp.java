@@ -92,6 +92,11 @@ public class ParentSignUp extends AppCompatActivity {
 
                                     Toast.makeText(ParentSignUp.this, "Registed", Toast.LENGTH_SHORT).show();
                                     signUpBtn.setText("Verify");
+                                    //below 3 line code for registeing parent in firebase firestore
+                                    parentAccount.setMail(mailStr);
+                                    setUserID();
+                                    setRelation(parentAccount);
+                                    //
                                     RegistedFlg = true;
                                     signUpBtn.setVisibility(View.VISIBLE);
                                     btnLoadingAnime.setVisibility(View.GONE);
@@ -148,9 +153,6 @@ public class ParentSignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mailSentDialog.cancel();
-                parentAccount.setMail(mailStr);
-                setUserID();
-                setRelation(parentAccount);
                 finish();
             }
         });
