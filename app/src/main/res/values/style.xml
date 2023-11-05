@@ -5,4 +5,8 @@
         <item name="cornerSize">20dp</item>
         <item name="color">@color/white</item>
     </style>
+    <style name="password_EYE_Style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="endIconTint">@color/password_EYE_color</item>
+
+    </style>
 </resources>

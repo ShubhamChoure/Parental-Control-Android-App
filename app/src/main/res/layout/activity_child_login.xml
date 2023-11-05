@@ -9,22 +9,30 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@drawable/parenttv"
-                android:layout_height="350dp">
-            </ImageView>
-            <com.google.android.material.textfield.TextInputLayout
+            android:orientation="vertical"
+            tools:ignore="ExtraText"><![CDATA[
+
+            com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp">
-                <com.google.android.material.textfield.TextInputEditText
+
+                ]]>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="390sp"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@drawable/chlid_loginpages">
+
+            </ImageView>
+
+            <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/LoginMailETxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -33,14 +41,14 @@
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
-                    android:drawableLeft="@drawable/baseline_email_24"
+                    android:drawableLeft="@drawable/baseline_email_25"
                     android:hint="  Enter E-mail"
                     android:padding="15dp"
                     android:textStyle="italic"
                     android:textColor="@color/black"
                     tools:ignore="InefficientWeight">
                 </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/PassTextLayout"
                 android:layout_width="match_parent"
@@ -67,7 +75,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
+                <TextView
                 android:layout_weight="4"
                 android:id="@+id/ForgetTV"
                 android:layout_width="match_parent"

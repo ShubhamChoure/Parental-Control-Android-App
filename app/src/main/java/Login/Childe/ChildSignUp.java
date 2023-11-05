@@ -112,6 +112,10 @@ public class ChildSignUp extends AppCompatActivity {
 
                                     Toast.makeText(ChildSignUp.this, "Registed", Toast.LENGTH_SHORT).show();
                                     signUpBtn.setText("Verify");
+                                    //below 2 line code will store the data in firebase firestore
+                                    setUserID();
+                                    setRelation(parentMailStr);
+                                    //
                                     RegistedFlg = true;
                                     signUpBtn.setVisibility(View.VISIBLE);
                                     btnLoadingAnime.setVisibility(View.GONE);
@@ -172,8 +176,6 @@ public class ChildSignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mailSentDialog.cancel();
-                setUserID();
-                setRelation(parentMailStr);
                 finish();
             }
         });
