@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationViewpar;
     Fragment parentaccount,parentapplock;
+    public static Context ParentHomeContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +43,9 @@ public class HomeActivity extends AppCompatActivity {
                 {
                     switchFragments(parentapplock,false);
                 }
-                else if (id==R.id.nav_paraccount)
+                else if (id==R.id.nav_parentAccount)
                 {
-                  switchFragments(parentapplock, false);
+                  switchFragments(parentaccount,false);
                 }
                 return false;
             }
@@ -70,5 +72,6 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationViewpar = findViewById(R.id.BottomNavigationViewpar);
         parentaccount = new ParentAccount();
         parentapplock = new ParentAppLock();
+        ParentHomeContext = HomeActivity.this;
     }
 }
