@@ -24,7 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import HomeActivity.HomeActivity;
+import HomeActivity.ParentHomeActivity.HomeActivity;
 
 public class ParentLogin extends AppCompatActivity {
     EditText mailEDtxt,passEDtxt;

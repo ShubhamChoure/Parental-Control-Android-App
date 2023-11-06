@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
-import HomeActivity.HomeActivity;
 
 public class ChildLogin extends AppCompatActivity {
 

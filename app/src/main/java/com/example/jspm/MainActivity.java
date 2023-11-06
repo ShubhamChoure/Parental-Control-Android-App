@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,7 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
-import HomeActivity.HomeActivity;
+import HomeActivity.ParentHomeActivity.HomeActivity;
 import Login.Childe.ChildLogin;
 
 public class MainActivity extends AppCompatActivity {
