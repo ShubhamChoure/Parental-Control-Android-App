@@ -27,7 +27,7 @@
             android:name="Login.ParentForgetPassword"
             android:exported="false" />
         <activity
-            android:name="HomeActivity.HomeActivity"
+            android:name="HomeActivity.ParentHomeActivity.HomeActivity"
             android:exported="false" />
         <activity
             android:name="Login.ParentSignUp"
