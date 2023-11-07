@@ -18,7 +18,9 @@
                 android:layout_height="350dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
-                android:src="@drawable/parenttv"></ImageView>
+                android:src="@drawable/parenttv">
+
+            </ImageView>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
