@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         init();
         bottomNavigationViewpar.setSelectedItemId(R.id.nav_parlock);
-        
+
         switchFragments(new ParentAppLock(),true);
         
         bottomNavigationViewpar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -55,14 +55,13 @@ public class HomeActivity extends AppCompatActivity {
         {
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.FrameLayout, fragment);
+            transaction.add(R.id.parentframelayout, fragment);
             transaction.commit();
-
         }
         else {
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.FrameLayout, fragment);
+            transaction.replace(R.id.parentframelayout, fragment);
             transaction.commit();
         }
     }
