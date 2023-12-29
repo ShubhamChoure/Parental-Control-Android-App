@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
                 {
                   switchFragments(parentaccount,false);
                 }
-                return false;
+                return true;
             }
         });
 
