@@ -1,10 +1,17 @@
 package BottomNavigation.ChildeNavigation;
 
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +31,7 @@ import com.example.jspm.MainActivity;
 import com.example.jspm.R;
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -34,7 +43,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,8 +81,8 @@ public class ChildAppLock extends Fragment {
     ArrayList<AppListModel> appListModels;
 
     FirebaseFirestore db;
-
-    StorageReference storageReference ;
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
 
     public ChildAppLock() {
         // Required empty public constructor
@@ -115,7 +131,8 @@ public class ChildAppLock extends Fragment {
 
         appListModels = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference();
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
 
     }
 
@@ -129,20 +146,19 @@ public class ChildAppLock extends Fragment {
     void getUserApp()
     {
         PackageManager pm = getActivity().getPackageManager();
-        List<PackageInfo> packageList = pm.getInstalledPackages(PackageManager.GET_META_DATA);
-        for (PackageInfo i:packageList) {
+        List<ApplicationInfo> packageList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        for (ApplicationInfo i:packageList) {
 
             AppListModel obj = new AppListModel();
-            obj.setAppName(i.applicationInfo.loadLabel(pm).toString());
-            obj.setPackageName(i.applicationInfo.packageName);
-            obj.setAppIcon(i.applicationInfo.loadIcon(pm));
+            obj.setAppName(i.loadLabel(pm).toString());
+            obj.setPackageName(i.packageName);
+            obj.setAppIcon(i.loadIcon(pm));
             appListModels.add(obj);
         }
 
     }
 
-    void UploadAppList()
-    {
+    void UploadAppList(){
 
 
 
@@ -152,7 +168,7 @@ public class ChildAppLock extends Fragment {
             hashMap.put("AppName",i.getAppName());
             hashMap.put("PackageName",i.getPackageName());
 
-            CollectionReference collectionReference = db.collection("AppList");
+            CollectionReference collectionReference = db.collection(ChildHomeActivity.mAuth.getCurrentUser().getEmail());
             String id = i.getAppName();
             try {
                 collectionReference.document(id).set(hashMap);
@@ -163,11 +179,41 @@ public class ChildAppLock extends Fragment {
              Log.e("tag", e.toString());
             }
 
-
-
+           StorageReference iconStrRef = storageReference.child("Icon").child(i.getAppName());
+            byte[] data = bitmapTobyteArray(drawableToBitmap(i.getAppIcon()));
+            uploadAppIcon(data,iconStrRef);
         }
 
     }
 
 
+    byte[] bitmapTobyteArray(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        return data;
+    }
+    Bitmap drawableToBitmap(Drawable drawable)
+    {
+                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);
+                return bitmap;
+    }
+
+    void uploadAppIcon(byte[] data,StorageReference iconStrRef){
+        UploadTask uploadTask = iconStrRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("tag","icon upload unsucessful");
+            }
+        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                Log.e("tag","Icon Upload Sucessful");
+            }
+        });
+    }
 }
