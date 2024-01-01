@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
 import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListAdapter;
@@ -203,9 +204,10 @@ public class ParentAppLock extends Fragment {
                                                obj.setAppIcon(byteArrayToDrawable(appIconDecoded,obj.getAppName()));
                                                Log.e("tag","Icon Taken From Shared Preference");
                                             }
+                                            updateLockStatus(obj.getAppName());
                                             arrayList.add(obj);
                                         }
-                                       setAppListAdapter();
+                                       setAppListAdapter(childName);
                                     } else {
                                         Log.e("tag", childName + " collecton is unsuccessful");
                                     }
@@ -223,9 +225,9 @@ public class ParentAppLock extends Fragment {
 
     }
 
-    void setAppListAdapter() {
+    void setAppListAdapter(String childName) {
 
-        parentAppListAdapter = new ParentAppListAdapter(getContext(), arrayList);
+        parentAppListAdapter = new ParentAppListAdapter(getContext(), arrayList,childName);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(parentAppListAdapter);
 
@@ -245,5 +247,22 @@ public class ParentAppLock extends Fragment {
                 parentAppListAdapter.setFilteredList(filteredList);
             }
         }
+    }
+
+    void updateLockStatus(String appName){
+        db.collection("Relation").whereEqualTo("Mail", mAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String childName = document.getString("LinkChild");
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("LockStatus",HomeActivity.lockSharedPreference.getBoolean(appName,false));
+                        db.collection(childName).document(appName).update(hashMap);
+
+                    }
+                }
+            }
+        });
     }
 }

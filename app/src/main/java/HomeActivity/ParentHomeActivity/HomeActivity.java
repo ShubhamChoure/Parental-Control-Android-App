@@ -18,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import BottomNavigation.ParentNavigation.ParentAccount;
 import BottomNavigation.ParentNavigation.ParentAppLock;
@@ -26,6 +27,7 @@ public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationViewpar;
     Fragment parentaccount,parentapplock;
+
     public static SharedPreferences lockSharedPreference , iconSharedPreference;
     public static SharedPreferences.Editor lockEditor,iconEditor;
     public static final String PREF_LOCK = "LockStatus";

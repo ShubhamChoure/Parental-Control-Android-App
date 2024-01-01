@@ -11,8 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jspm.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.StructuredQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
 import HomeActivity.ParentHomeActivity.HomeActivity;
@@ -22,14 +25,19 @@ public class ParentAppListAdapter extends RecyclerView.Adapter<ParentAppListAdap
     Context context;
     ArrayList<ParentAppListModel> arrayList;
 
+    FirebaseFirestore db;
+    String childName;
+
     public void setFilteredList(ArrayList<ParentAppListModel> arrayList) {
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }
 
-    public ParentAppListAdapter(Context context, ArrayList<ParentAppListModel> arrayList) {
+    public ParentAppListAdapter(Context context, ArrayList<ParentAppListModel> arrayList , String childName) {
         this.context = context;
         this.arrayList = arrayList;
+        this.childName = childName;
+        db = FirebaseFirestore.getInstance();
     }
 
     @NonNull
@@ -53,9 +61,15 @@ public class ParentAppListAdapter extends RecyclerView.Adapter<ParentAppListAdap
                 if(HomeActivity.lockSharedPreference.getBoolean(arrayList.get(position).getAppName(),false)){
                     holder.lockImg.setImageResource(R.drawable.baseline_lock_open_24);
                     HomeActivity.lockEditor.putBoolean(arrayList.get(position).getAppName(),false).commit();
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("LockStatus",false);
+                    db.collection(childName).document(arrayList.get(position).getAppName()).update(hashMap);
                 }else{
                     holder.lockImg.setImageResource(R.drawable.baseline_lock_24);
                     HomeActivity.lockEditor.putBoolean(arrayList.get(position).getAppName(),true).commit();
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("LockStatus",true);
+                    db.collection(childName).document(arrayList.get(position).getAppName()).update(hashMap);
                 }
             }
         });
