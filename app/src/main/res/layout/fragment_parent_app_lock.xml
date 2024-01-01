@@ -4,10 +4,29 @@
     android:layout_height="match_parent"
     tools:context="BottomNavigation.ParentNavigation.ParentAppLock">
 
+
+
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="parentapplock" />
+        android:layout_height="?actionBarSize"
+        android:textAlignment="center"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:text="PARENT_APP_LOCK"
+        android:id="@+id/appListNameTV"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?actionBarSize"
+            android:id="@+id/parentAppListRV">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+
 
 </FrameLayout>
