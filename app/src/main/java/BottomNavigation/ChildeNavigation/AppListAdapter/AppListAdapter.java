@@ -46,6 +46,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.MyViewHo
         return appListModels.size();
     }
 
+    public void setFilteredList(ArrayList<AppListModel> filteredList) {
+        this.appListModels = filteredList;
+        notifyDataSetChanged();
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder
     {
         ImageView iconImg,lockImg;

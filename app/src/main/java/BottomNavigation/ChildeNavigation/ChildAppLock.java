@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,13 +26,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.amrdeveloper.lottiedialog.LottieDialog;
 import com.example.jspm.MainActivity;
 import com.example.jspm.R;
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -58,6 +62,7 @@ import java.util.List;
 
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListAdapter;
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
+import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListModel;
 import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
 
 /**
@@ -83,6 +88,8 @@ public class ChildAppLock extends Fragment {
     FirebaseFirestore db;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+
+    SearchView searchView;
 
     public ChildAppLock() {
         // Required empty public constructor
@@ -121,6 +128,20 @@ public class ChildAppLock extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_child_app_lock, container, false);
         chlidAppListRV = view.findViewById(R.id.chlidAppListRV);
+        searchView = view.findViewById(R.id.chlidAppListSV);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterAppList(newText);
+                return true;
+            }
+        });
+
         init();
         setApplist();
         UploadAppList();
@@ -161,7 +182,7 @@ public class ChildAppLock extends Fragment {
     void UploadAppList(){
 
 
-
+        Toast.makeText(getContext(), "Wait till app upload is complete", Toast.LENGTH_SHORT).show();
         for (AppListModel i : appListModels) {
             HashMap<String,Object> hashMap;
             hashMap = new HashMap<String,Object>();
@@ -172,16 +193,28 @@ public class ChildAppLock extends Fragment {
             String id = i.getAppName();
             try {
                 collectionReference.document(id).set(hashMap);
-                Log.e("tag","document already exist");
             }
             catch (Exception  e)
             {
              Log.e("tag", e.toString());
             }
+        storageReference.child("Icon/"+i.getAppName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+             @Override
+             public void onSuccess(Uri uri) {
 
-           StorageReference iconStrRef = storageReference.child("Icon").child(i.getAppName());
-            byte[] data = bitmapTobyteArray(drawableToBitmap(i.getAppIcon()));
-            uploadAppIcon(data,iconStrRef);
+                 Log.e("tag","Icon Already Uploaded");
+
+             }
+         }).addOnFailureListener(new OnFailureListener() {
+             @Override
+             public void onFailure(@NonNull Exception e) {
+                 StorageReference iconStrRef = storageReference.child("Icon").child(i.getAppName());
+                 byte[] data = bitmapTobyteArray(drawableToBitmap(i.getAppIcon()));
+                 uploadAppIcon(data,iconStrRef);
+
+             }
+         });
+
         }
 
     }
@@ -215,5 +248,14 @@ public class ChildAppLock extends Fragment {
                 Log.e("tag","Icon Upload Sucessful");
             }
         });
+    }
+    private void filterAppList(String newText) {
+        ArrayList<AppListModel> filteredList = new ArrayList<>();
+        for(AppListModel i : appListModels){
+            if(i.getAppName().toLowerCase().trim().contains(newText.toLowerCase().trim())){
+                filteredList.add(i);
+                appListAdapter.setFilteredList(filteredList);
+            }
+        }
     }
 }

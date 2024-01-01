@@ -1,13 +1,16 @@
 package BottomNavigation.ParentNavigation;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.jspm.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,10 +30,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
+import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
 import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListAdapter;
 import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListModel;
+import HomeActivity.ParentHomeActivity.HomeActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,9 +68,12 @@ public class ParentAppLock extends Fragment {
     StorageReference storageReference;
 
     ArrayList<ParentAppListModel> arrayList;
+    ParentAppListAdapter parentAppListAdapter;
 
+    androidx.appcompat.widget.SearchView searchView;
     String childName;
-
+    byte[] appIconDecoded;
+    final long ONE_MEGABYTE = 1024 * 1024;
 
     public ParentAppLock() {
         // Required empty public constructor
@@ -102,14 +113,29 @@ public class ParentAppLock extends Fragment {
         View view = inflater.inflate(R.layout.fragment_parent_app_lock, container, false);
         recyclerView = view.findViewById(R.id.parentAppListRV);
         appListName = view.findViewById(R.id.appListNameTV);
+        searchView = view.findViewById(R.id.parentAppListSV);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterAppList(newText);
+                return true;
+            }
+        });
+
         init();
         setAppListName();
         getChildAppList();
-
-
         return view;
 
     }
+
+
 
     void init() {
         mAuth = FirebaseAuth.getInstance();
@@ -153,11 +179,33 @@ public class ParentAppLock extends Fragment {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             ParentAppListModel obj = new ParentAppListModel();
                                             obj.setAppName(document.getString("AppName"));
-                                            Log.e("tag", "ObjAppName : " + obj.getAppName());
                                             obj.setPackageName(document.getString("PackageName"));
+
+                                            String byteArrString = HomeActivity.iconSharedPreference.getString(obj.getAppName(),"NOTSAVED");
+                                            if(byteArrString.equals("NOTSAVED")){
+                                                //load image
+                                                StorageReference imagePath = storageReference.child("Icon/" + obj.getAppName());
+                                                imagePath.getBytes(ONE_MEGABYTE).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.e("tag", e.toString());
+                                                    }
+                                                }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<byte[]> task) {
+                                                        obj.setAppIcon(byteArrayToDrawable(task.getResult(),obj.getAppName()));
+                                                        HomeActivity.iconEditor.putString(obj.getAppName(), Base64.encodeToString(task.getResult(), android.util.Base64.DEFAULT)).commit();
+                                                        Log.e("tag","Icon Taken From FireStorage");
+                                                    }
+                                                });
+                                            }else{
+                                               appIconDecoded = Base64.decode(byteArrString,Base64.DEFAULT);
+                                               obj.setAppIcon(byteArrayToDrawable(appIconDecoded,obj.getAppName()));
+                                               Log.e("tag","Icon Taken From Shared Preference");
+                                            }
                                             arrayList.add(obj);
                                         }
-                                        setAppListAdapter();
+                                       setAppListAdapter();
                                     } else {
                                         Log.e("tag", childName + " collecton is unsuccessful");
                                     }
@@ -177,10 +225,25 @@ public class ParentAppLock extends Fragment {
 
     void setAppListAdapter() {
 
-        ParentAppListAdapter parentAppListAdapter = new ParentAppListAdapter(getContext(), arrayList);
+        parentAppListAdapter = new ParentAppListAdapter(getContext(), arrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(parentAppListAdapter);
 
         Log.e("tag", "AppName : " + arrayList.get(0).getAppName());
+    }
+
+    Drawable byteArrayToDrawable(byte[] bar,String appName) {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bar);
+        Drawable drawable = Drawable.createFromStream(byteArrayInputStream, appName);
+        return drawable;
+    }
+    private void filterAppList(String newText) {
+        ArrayList<ParentAppListModel> filteredList = new ArrayList<>();
+        for(ParentAppListModel i : arrayList){
+            if(i.getAppName().toLowerCase().trim().contains(newText.toLowerCase().trim())){
+                filteredList.add(i);
+                parentAppListAdapter.setFilteredList(filteredList);
+            }
+        }
     }
 }

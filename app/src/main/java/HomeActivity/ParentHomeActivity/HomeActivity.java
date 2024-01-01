@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,10 @@ public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationViewpar;
     Fragment parentaccount,parentapplock;
+    public static SharedPreferences lockSharedPreference , iconSharedPreference;
+    public static SharedPreferences.Editor lockEditor,iconEditor;
+    public static final String PREF_LOCK = "LockStatus";
+    public static final String PREF_APP_ICON = "downloadIcon";
     public static Context ParentHomeContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,5 +78,9 @@ public class HomeActivity extends AppCompatActivity {
         parentaccount = new ParentAccount();
         parentapplock = new ParentAppLock();
         ParentHomeContext = HomeActivity.this;
+        iconSharedPreference = getSharedPreferences(PREF_APP_ICON,MODE_PRIVATE);
+        lockSharedPreference = getSharedPreferences(PREF_LOCK,MODE_PRIVATE);
+        lockEditor = lockSharedPreference.edit();
+        iconEditor = iconSharedPreference.edit();
     }
 }

@@ -15,11 +15,17 @@ import com.example.jspm.R;
 import java.util.ArrayList;
 
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
+import HomeActivity.ParentHomeActivity.HomeActivity;
 
 public class ParentAppListAdapter extends RecyclerView.Adapter<ParentAppListAdapter.ParentViewHolder> {
 
     Context context;
     ArrayList<ParentAppListModel> arrayList;
+
+    public void setFilteredList(ArrayList<ParentAppListModel> arrayList) {
+        this.arrayList = arrayList;
+        notifyDataSetChanged();
+    }
 
     public ParentAppListAdapter(Context context, ArrayList<ParentAppListModel> arrayList) {
         this.context = context;
@@ -36,7 +42,23 @@ public class ParentAppListAdapter extends RecyclerView.Adapter<ParentAppListAdap
     @Override
     public void onBindViewHolder(@NonNull ParentViewHolder holder, int position) {
         holder.appName.setText(arrayList.get(position).getAppName());
+        holder.iconImg.setImageDrawable(arrayList.get(position).getAppIcon());
 
+        if(HomeActivity.lockSharedPreference.getBoolean(arrayList.get(position).getAppName(),false)){
+            holder.lockImg.setImageResource(R.drawable.baseline_lock_24);
+        }
+        holder.lockImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(HomeActivity.lockSharedPreference.getBoolean(arrayList.get(position).getAppName(),false)){
+                    holder.lockImg.setImageResource(R.drawable.baseline_lock_open_24);
+                    HomeActivity.lockEditor.putBoolean(arrayList.get(position).getAppName(),false).commit();
+                }else{
+                    holder.lockImg.setImageResource(R.drawable.baseline_lock_24);
+                    HomeActivity.lockEditor.putBoolean(arrayList.get(position).getAppName(),true).commit();
+                }
+            }
+        });
     }
 
     @Override
