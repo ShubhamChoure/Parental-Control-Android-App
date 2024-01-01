@@ -41,7 +41,7 @@
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
-                    android:drawableLeft="@drawable/baseline_email_25"
+                    android:drawableLeft="@drawable/baseline_mail_24_blackieee"
                     android:hint="  Enter E-mail"
                     android:padding="15dp"
                     android:textStyle="italic"
