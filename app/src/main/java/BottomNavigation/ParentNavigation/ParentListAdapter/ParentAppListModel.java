@@ -6,10 +6,12 @@ import android.graphics.drawable.Drawable;
 import java.util.HashMap;
 import java.util.Map;
 
+import HomeActivity.ParentHomeActivity.HomeActivity;
+
 public class ParentAppListModel {
     String appName,packageName;
     Drawable AppIcon;
-
+    Boolean lockStatus;
     public void setAppName(String appName) {
         this.appName = appName;
     }
@@ -23,13 +25,21 @@ public class ParentAppListModel {
     }
 
     public ParentAppListModel() {
-
     }
 
-    public ParentAppListModel(String appName, String packageName, Drawable appIcon) {
+    public Boolean getLockStatus() {
+        return lockStatus;
+    }
+
+    public void setLockStatus(Boolean lockStatus) {
+        this.lockStatus = lockStatus;
+    }
+
+    public ParentAppListModel(String appName, String packageName, Drawable appIcon, Boolean lockStatus) {
         this.appName = appName;
         this.packageName = packageName;
-        AppIcon = appIcon;
+        this.AppIcon = appIcon;
+        this.lockStatus = lockStatus;
     }
 
     public String getAppName() {
