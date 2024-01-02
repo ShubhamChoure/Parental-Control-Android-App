@@ -1,18 +1,41 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="BottomNavigation.ChildeNavigation.ChildAppLock">
-    <androidx.appcompat.widget.SearchView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:id="@+id/chlidAppListSV">
-    </androidx.appcompat.widget.SearchView>
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
-        android:id="@+id/chlidAppListRV"/>
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/chlidAppListSV"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.SearchView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chlidAppListRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chlidAppListSV" />
+
+        <Button
+            android:id="@+id/updateStatusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update Status"
+            app:layout_constraintBottom_toBottomOf="@+id/chlidAppListRV"
+            app:layout_constraintEnd_toEndOf="@+id/chlidAppListRV"
+            app:layout_constraintStart_toStartOf="@+id/chlidAppListRV" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

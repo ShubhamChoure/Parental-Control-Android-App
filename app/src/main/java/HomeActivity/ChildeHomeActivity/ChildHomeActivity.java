@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,12 @@ public class ChildHomeActivity extends AppCompatActivity {
     Button childFragmentLogoutBtn;
     Fragment childAppLock,childAccount;
     public static Context MyContext;
+
+    public static SharedPreferences lockSharedPreference;
+
+    public static SharedPreferences.Editor lockEditor;
+
+    public static final String PREF_LOCK = "LockStatus";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,5 +82,7 @@ public class ChildHomeActivity extends AppCompatActivity {
         childAppLock = new ChildAppLock();
         childAccount = new ChildeAccount();
         MyContext = ChildHomeActivity.this;
+        lockSharedPreference = getSharedPreferences(PREF_LOCK,MODE_PRIVATE);
+        lockEditor = lockSharedPreference.edit();
     }
 }

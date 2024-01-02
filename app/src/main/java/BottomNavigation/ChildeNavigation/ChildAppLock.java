@@ -2,6 +2,7 @@ package BottomNavigation.ChildeNavigation;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -64,6 +65,7 @@ import BottomNavigation.ChildeNavigation.AppListAdapter.AppListAdapter;
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
 import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListModel;
 import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
+import HomeActivity.ParentHomeActivity.HomeActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,6 +92,12 @@ public class ChildAppLock extends Fragment {
     StorageReference storageReference;
 
     SearchView searchView;
+
+    FirebaseAuth mAuth;
+
+    Button updateStatusBtn;
+
+
 
     public ChildAppLock() {
         // Required empty public constructor
@@ -129,6 +137,7 @@ public class ChildAppLock extends Fragment {
         View view = inflater.inflate(R.layout.fragment_child_app_lock, container, false);
         chlidAppListRV = view.findViewById(R.id.chlidAppListRV);
         searchView = view.findViewById(R.id.chlidAppListSV);
+        updateStatusBtn = view.findViewById(R.id.updateStatusBtn);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -142,8 +151,17 @@ public class ChildAppLock extends Fragment {
             }
         });
 
+
+        updateStatusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadLockstatus();
+            }
+        });
+
         init();
         setApplist();
+        UploadAppList();
         UploadAppList();
         return view;
     }
@@ -154,6 +172,8 @@ public class ChildAppLock extends Fragment {
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+        mAuth = FirebaseAuth.getInstance();
+
 
     }
 
@@ -257,5 +277,33 @@ public class ChildAppLock extends Fragment {
                 appListAdapter.setFilteredList(filteredList);
             }
         }
+    }
+    void downloadLockstatus()
+    {
+        db.collection(mAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        String appName = document.get("AppName").toString();
+                       Boolean lockStatus = (Boolean)document.get("LockStatus");
+                       if (lockStatus != null)
+                       {
+                           ChildHomeActivity.lockEditor.putBoolean(appName,lockStatus).commit();
+                           Log.e("tagStatus","lock status updated");
+                       }
+                        else {
+                           ChildHomeActivity.lockEditor.putBoolean(appName,false).commit();
+                           Log.e("tagStatus","lock status is null");
+                       }
+                    }
+                }
+                else {
+                    Log.e("tag","Download lock status task failed");
+                }
+            }
+        });
     }
 }

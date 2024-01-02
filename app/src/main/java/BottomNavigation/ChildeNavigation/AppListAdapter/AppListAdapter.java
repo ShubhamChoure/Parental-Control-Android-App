@@ -1,6 +1,7 @@
 package BottomNavigation.ChildeNavigation.AppListAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import com.example.jspm.R;
 import com.google.protobuf.DescriptorProtos;
 
 import java.util.ArrayList;
+
+import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
+import HomeActivity.ParentHomeActivity.HomeActivity;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.MyViewHolder> {
     Context Mycontext;
@@ -38,6 +42,15 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.appName.setText(appListModels.get(position).appName);
         holder.iconImg.setImageDrawable(appListModels.get(position).AppIcon);
+       if (ChildHomeActivity.lockSharedPreference.getBoolean(appListModels.get(position).getAppName(),false))
+       {
+           Log.e("tagStatusRV","app lock status is taken from sharedprefence");
+           holder.lockImg.setImageResource(R.drawable.baseline_lock_24);
+       }
+       else {
+           Log.e("tagStatusRV","app lock status is taken from default");
+           holder.lockImg.setImageResource(R.drawable.baseline_lock_open_24);
+       }
 
     }
 
