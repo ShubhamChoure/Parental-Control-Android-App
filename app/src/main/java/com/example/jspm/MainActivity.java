@@ -2,10 +2,17 @@ package com.example.jspm;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.app.AppOpsManager;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -64,33 +71,68 @@ FirebaseFirestore db;
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            if(currentUser.isEmailVerified()) {
-                db.collection("User").whereEqualTo("Email", mAuth.getCurrentUser().getEmail().trim()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String user = document.getString("User");
-                                userList.add(user);
-                            }
-                            if (!userList.isEmpty()) {
-                                if (userList.get(0).trim().equals("parent")) {
-                                    Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                                    startActivity(homeIntent);
-                                    finish();
-                                } else if (userList.get(0).trim().equals("childe")) {
-                                    Intent homeIntent = new Intent(MainActivity.this, ChildHomeActivity.class);
-                                    startActivity(homeIntent);
-                                    finish();
+        if(checkPermission()) {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser != null) {
+                if (currentUser.isEmailVerified()) {
+                    db.collection("User").whereEqualTo("Email", mAuth.getCurrentUser().getEmail().trim()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String user = document.getString("User");
+                                    userList.add(user);
+                                }
+                                if (!userList.isEmpty()) {
+                                    if (userList.get(0).trim().equals("parent")) {
+                                        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                                        startActivity(homeIntent);
+                                        finish();
+                                    } else if (userList.get(0).trim().equals("childe")) {
+                                        Intent homeIntent = new Intent(MainActivity.this, ChildHomeActivity.class);
+                                        startActivity(homeIntent);
+                                        finish();
+                                    }
                                 }
                             }
                         }
-                    }
-                });
+                    });
 
+                }
             }
+        } else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Permission Not Granted !!!!");
+            builder.setMessage("Allow Usage Permission");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    MainActivity.this.startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
         }
+    }
+    boolean checkPermission()
+    {
+        boolean granted = false;
+        AppOpsManager appOps = (AppOpsManager)
+                MainActivity.this.getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(), MainActivity.this.getPackageName());
+
+        if (mode == AppOpsManager.MODE_DEFAULT) {
+            granted = (MainActivity.this.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
+        } else {
+            granted = (mode == AppOpsManager.MODE_ALLOWED);
+        }
+        return  granted;
     }
 }

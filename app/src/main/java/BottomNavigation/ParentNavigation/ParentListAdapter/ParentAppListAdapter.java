@@ -1,6 +1,7 @@
 package BottomNavigation.ParentNavigation.ParentListAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jspm.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firestore.v1.StructuredQuery;
 
@@ -54,6 +57,8 @@ public class ParentAppListAdapter extends RecyclerView.Adapter<ParentAppListAdap
 
         if(HomeActivity.lockSharedPreference.getBoolean(arrayList.get(position).getAppName(),false)){
             holder.lockImg.setImageResource(R.drawable.baseline_lock_24);
+        }else{
+            holder.lockImg.setImageResource(R.drawable.baseline_lock_open_24);
         }
         holder.lockImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,13 +68,31 @@ public class ParentAppListAdapter extends RecyclerView.Adapter<ParentAppListAdap
                     HomeActivity.lockEditor.putBoolean(arrayList.get(position).getAppName(),false).commit();
                     HashMap<String,Object> hashMap = new HashMap<>();
                     hashMap.put("LockStatus",false);
-                    db.collection(childName).document(arrayList.get(position).getAppName()).update(hashMap);
+                    db.collection(childName).document(arrayList.get(position).getAppName()).update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Log.e("tagLockStatus","Lock Status Update Sucessful");
+                            }else{
+                                Log.e("tagLockStatus","Lock Status Update Fail");
+                            }
+                        }
+                    });
                 }else{
                     holder.lockImg.setImageResource(R.drawable.baseline_lock_24);
                     HomeActivity.lockEditor.putBoolean(arrayList.get(position).getAppName(),true).commit();
                     HashMap<String,Object> hashMap = new HashMap<>();
                     hashMap.put("LockStatus",true);
-                    db.collection(childName).document(arrayList.get(position).getAppName()).update(hashMap);
+                    db.collection(childName).document(arrayList.get(position).getAppName()).update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Log.e("tagLockStatus","Lock Status Update Sucessful");
+                            }else{
+                                Log.e("tagLockStatus","Lock Status Update Fail");
+                            }
+                        }
+                    });
                 }
             }
         });

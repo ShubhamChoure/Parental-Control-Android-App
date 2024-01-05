@@ -32,11 +32,11 @@ public class ChildHomeActivity extends AppCompatActivity {
     Fragment childAppLock,childAccount;
     public static Context MyContext;
 
-    public static SharedPreferences lockSharedPreference;
+    public static SharedPreferences childlockSharedPreference;
 
-    public static SharedPreferences.Editor lockEditor;
+    public static SharedPreferences.Editor childlockEditor;
 
-    public static final String PREF_LOCK = "LockStatus";
+    public static final String PREF_LOCK = "ChildLockStatus";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +82,7 @@ public class ChildHomeActivity extends AppCompatActivity {
         childAppLock = new ChildAppLock();
         childAccount = new ChildeAccount();
         MyContext = ChildHomeActivity.this;
-        lockSharedPreference = getSharedPreferences(PREF_LOCK,MODE_PRIVATE);
-        lockEditor = lockSharedPreference.edit();
+        childlockSharedPreference = getSharedPreferences(PREF_LOCK,MODE_PRIVATE);
+        childlockEditor = childlockSharedPreference.edit();
     }
 }

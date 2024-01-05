@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JSPM"
         tools:targetApi="31">
+        <receiver
+            android:name="BottomNavigation.ChildeNavigation.AppLockAlarmReciver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <activity
             android:name="HomeActivity.ChildeHomeActivity.ChildHomeActivity"
             android:exported="false" />

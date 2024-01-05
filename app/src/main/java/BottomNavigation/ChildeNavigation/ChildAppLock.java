@@ -1,7 +1,10 @@
 package BottomNavigation.ChildeNavigation;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -96,6 +99,9 @@ public class ChildAppLock extends Fragment {
     FirebaseAuth mAuth;
 
     Button updateStatusBtn;
+    AlarmManager alarmManager;
+    long alarmTime;
+    public static final int ALARM_REQ_CODE = 100;
 
 
 
@@ -163,6 +169,7 @@ public class ChildAppLock extends Fragment {
         setApplist();
         UploadAppList();
         UploadAppList();
+        startAlarmManager();
         return view;
     }
     void init()
@@ -173,8 +180,7 @@ public class ChildAppLock extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
         mAuth = FirebaseAuth.getInstance();
-
-
+        alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
     }
 
     void setApplist()
@@ -291,11 +297,11 @@ public class ChildAppLock extends Fragment {
                        Boolean lockStatus = (Boolean)document.get("LockStatus");
                        if (lockStatus != null)
                        {
-                           ChildHomeActivity.lockEditor.putBoolean(appName,lockStatus).commit();
+                           ChildHomeActivity.childlockEditor.putBoolean(appName,lockStatus).commit();
                            Log.e("tagStatus","lock status updated");
                        }
                         else {
-                           ChildHomeActivity.lockEditor.putBoolean(appName,false).commit();
+                           ChildHomeActivity.childlockEditor.putBoolean(appName,false).commit();
                            Log.e("tagStatus","lock status is null");
                        }
                     }
@@ -305,5 +311,11 @@ public class ChildAppLock extends Fragment {
                 }
             }
         });
+    }
+    void startAlarmManager(){
+        Intent intent = new Intent(getContext(),AppLockAlarmReciver.class);
+        PendingIntent pe = PendingIntent.getBroadcast(getContext(),ALARM_REQ_CODE,intent,PendingIntent.FLAG_MUTABLE);
+        alarmTime = System.currentTimeMillis() + 2 * 1000;
+        alarmManager.set(AlarmManager.RTC,alarmTime,pe);
     }
 }
