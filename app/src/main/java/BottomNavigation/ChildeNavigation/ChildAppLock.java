@@ -218,7 +218,7 @@ public class ChildAppLock extends Fragment {
             CollectionReference collectionReference = db.collection(ChildHomeActivity.mAuth.getCurrentUser().getEmail());
             String id = i.getAppName();
             try {
-                collectionReference.document(id).set(hashMap);
+                collectionReference.document(id).update(hashMap);
             }
             catch (Exception  e)
             {

@@ -10,6 +10,9 @@ import android.app.usage.UsageStatsManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.util.List;
@@ -20,15 +23,21 @@ public class AppLockAlarmReciver extends BroadcastReceiver {
 
     static String tempCurrentApp = "Not Null";
     public static final int ALARM_REQ_CODE_IN_RECEIVER = 101;
+    PackageManager packageManager;
 
     AlarmManager alarmManager;
+    ApplicationInfo applicationInfo;
+    String appName;
+    public static SharedPreferences childlockSharedPreference;
+    public static final String PREF_LOCK = "ChildLockStatus";
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.e("tagAppOpen", "Alarm Manager Receiver Started");
+        // Log.e("tagAppOpen", "Alarm Manager Receiver Started");
+        init(context);
         detectApp(context);
     }
-    void detectApp(Context context) {
+    void detectApp(Context context){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             UsageStatsManager usageStatsManager = (UsageStatsManager)  context.getSystemService(USAGE_STATS_SERVICE);
             long currentTime = System.currentTimeMillis();
@@ -46,19 +55,34 @@ public class AppLockAlarmReciver extends BroadcastReceiver {
                     // Now topPackageName is the package name of the app that was launched most recently
                     if (!tempCurrentApp.equals(topPackageName)) {
                         tempCurrentApp = topPackageName;
-                        Log.e("tagAppOpen", topPackageName + " is launched");
+
+                        packageManager = context.getPackageManager();
+                        try {
+                            applicationInfo = packageManager.getApplicationInfo(topPackageName, PackageManager.GET_META_DATA);
+                            appName = (String) applicationInfo.loadLabel(packageManager);
+                            Log.e("tagAppOpen", appName + " is launched");
+                            if(childlockSharedPreference.getBoolean(appName,false)){
+                            Log.e("tagAppOpen",appName + " is locked");
+                            }
+                        } catch (Exception e){
+                            Log.e("tagAppOpen",e.toString());
+                        }
                     }
                 }
             }
         }
-        startAlarmManager(context);
+       startAlarmManager(context);
     }
-    void startAlarmManager(Context context){
+     void startAlarmManager(Context context){
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context,AppLockAlarmReciver.class);
         PendingIntent pe = PendingIntent.getBroadcast(context,ALARM_REQ_CODE_IN_RECEIVER,intent,PendingIntent.FLAG_MUTABLE);
         long alarmTime = System.currentTimeMillis() + 2 * 1000;
         alarmManager.set(AlarmManager.RTC,alarmTime,pe);
+    }
+
+    void init(Context context){
+        childlockSharedPreference = context.getSharedPreferences(PREF_LOCK,Context.MODE_PRIVATE);
     }
 
 }
