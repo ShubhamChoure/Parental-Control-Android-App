@@ -152,7 +152,17 @@ public class SetPatternActivity extends AppCompatActivity {
                     if (childName!=null) {
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("Pattern",arrayListPattern);
-                        db.collection(childName).document(childName + " Pattern").set(hashMap);
+                        db.collection(childName+" Pattern").document(childName + " Pattern").set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    lottieDialogBtn.setVisibility(View.VISIBLE);
+                                }else{
+                                    lottieDialogBtn.setVisibility(View.VISIBLE);
+                                    Toast.makeText(SetPatternActivity.this, "Pattern Upload Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
                     }else{
                         lottieDialog.cancel();

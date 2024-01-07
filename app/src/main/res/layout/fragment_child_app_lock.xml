@@ -8,16 +8,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/chlidAppListSV"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/appListToolbarChild"
+            android:layout_width="0dp"
             android:layout_height="?actionBarSize"
+            android:background="#445FD2"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </androidx.appcompat.widget.SearchView>
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/option_child"
+            app:title="PARENT_APP_LOCK"
+            app:titleTextColor="#FFFFFF" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -27,15 +32,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chlidAppListSV" />
+            app:layout_constraintTop_toBottomOf="@+id/appListToolbarChild" />
 
-        <Button
-            android:id="@+id/updateStatusBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update Status"
-            app:layout_constraintBottom_toBottomOf="@+id/chlidAppListRV"
-            app:layout_constraintEnd_toEndOf="@+id/chlidAppListRV"
-            app:layout_constraintStart_toStartOf="@+id/chlidAppListRV" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

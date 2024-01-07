@@ -19,7 +19,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,10 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.amrdeveloper.lottiedialog.LottieDialog;
@@ -94,12 +99,12 @@ public class ChildAppLock extends Fragment {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
 
-    SearchView searchView;
+    android.widget.SearchView searchView;
 
     FirebaseAuth mAuth;
 
-    Button updateStatusBtn;
     AlarmManager alarmManager;
+    Toolbar toolbar;
     long alarmTime;
     public static final int ALARM_REQ_CODE = 100;
 
@@ -136,35 +141,17 @@ public class ChildAppLock extends Fragment {
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_child_app_lock, container, false);
         chlidAppListRV = view.findViewById(R.id.chlidAppListRV);
-        searchView = view.findViewById(R.id.chlidAppListSV);
-        updateStatusBtn = view.findViewById(R.id.updateStatusBtn);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        toolbar = view.findViewById(R.id.appListToolbarChild);
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterAppList(newText);
-                return true;
-            }
-        });
-
-
-        updateStatusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadLockstatus();
-            }
-        });
-
+        setToolbar();
         init();
         setApplist();
         UploadAppList();
@@ -240,9 +227,8 @@ public class ChildAppLock extends Fragment {
 
              }
          });
-
         }
-
+        downloadLockstatus();
     }
 
 
@@ -293,18 +279,23 @@ public class ChildAppLock extends Fragment {
                 {
                     for (QueryDocumentSnapshot document : task.getResult())
                     {
-                        String appName = document.get("AppName").toString();
-                       Boolean lockStatus = (Boolean)document.get("LockStatus");
-                       if (lockStatus != null)
-                       {
-                           ChildHomeActivity.childlockEditor.putBoolean(appName,lockStatus).commit();
-                           Log.e("tagStatus","lock status updated");
-                       }
-                        else {
-                           ChildHomeActivity.childlockEditor.putBoolean(appName,false).commit();
-                           Log.e("tagStatus","lock status is null");
-                       }
+                        try {
+                            String appName = document.get("AppName").toString();
+                            Boolean lockStatus = (Boolean) document.get("LockStatus");
+                            if (lockStatus != null)
+                            {
+                                ChildHomeActivity.childlockEditor.putBoolean(appName,lockStatus).commit();
+                                Log.e("tagStatus","lock status updated");
+                            }
+                            else {
+                                ChildHomeActivity.childlockEditor.putBoolean(appName,false).commit();
+                                Log.e("tagStatus","lock status is null");
+                            }
+                        }catch (Exception e){
+                            Log.e("tag",e.toString());
+                        }
                     }
+                    Toast.makeText(getContext(), "Lock Status Update Complete", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Log.e("tag","Download lock status task failed");
@@ -317,5 +308,39 @@ public class ChildAppLock extends Fragment {
         PendingIntent pe = PendingIntent.getBroadcast(getContext(),ALARM_REQ_CODE,intent,PendingIntent.FLAG_MUTABLE);
         alarmTime = System.currentTimeMillis() + 2 * 1000;
         alarmManager.set(AlarmManager.RTC,alarmTime,pe);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.option_child,menu);
+        MenuItem menuItem = menu.findItem(R.id.searchViewChildOption);
+        searchView = (android.widget.SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterAppList(newText);
+                return true;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.updateStatusOption)
+        {
+            downloadLockstatus();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    void setToolbar(){
+        toolbar.setTitle("App Lock");
+        setHasOptionsMenu(true);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
     }
 }

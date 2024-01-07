@@ -180,18 +180,22 @@ public class ParentAppLock extends Fragment {
                                             if(byteArrString.equals("NOTSAVED")){
                                                 //load image
                                                 StorageReference imagePath = storageReference.child("Icon/" + obj.getAppName());
-                                                imagePath.getBytes(ONE_MEGABYTE).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.e("tag", e.toString());
-                                                    }
-                                                }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<byte[]> task) {
-                                                        obj.setAppIcon(byteArrayToDrawable(task.getResult(),obj.getAppName()));
-                                                        HomeActivity.iconEditor.putString(obj.getAppName(), Base64.encodeToString(task.getResult(), android.util.Base64.DEFAULT)).commit();
-                                                    }
-                                                });
+
+                                                Boolean available =  imagePath.getDownloadUrl().isSuccessful();
+                                                if(available) {
+                                                    imagePath.getBytes(ONE_MEGABYTE).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.e("tag", e.toString());
+                                                        }
+                                                    }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<byte[]> task) {
+                                                            obj.setAppIcon(byteArrayToDrawable(task.getResult(), obj.getAppName()));
+                                                            HomeActivity.iconEditor.putString(obj.getAppName(), Base64.encodeToString(task.getResult(), android.util.Base64.DEFAULT)).commit();
+                                                        }
+                                                    });
+                                                }
                                             }else{
                                                appIconDecoded = Base64.decode(byteArrString,Base64.DEFAULT);
                                                obj.setAppIcon(byteArrayToDrawable(appIconDecoded,obj.getAppName()));
@@ -248,9 +252,11 @@ public class ParentAppLock extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String childName = document.getString("LinkChild");
-                        if(childName!=null){
+
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("LockStatus",HomeActivity.lockSharedPreference.getBoolean(appName,false));
+                        Log.e("tag",appName + " is app name");
+                        if(childName!=null && appName!=null){
                         db.collection(childName).document(appName).update(hashMap);
                         }else{
                             Log.e("tag","child name is null");
