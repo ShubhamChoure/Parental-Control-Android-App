@@ -1,5 +1,6 @@
 package BottomNavigation.ParentNavigation;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -43,6 +44,7 @@ import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
 import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListAdapter;
 import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListModel;
 import HomeActivity.ParentHomeActivity.HomeActivity;
+import Locks.SetPatternActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -188,13 +190,11 @@ public class ParentAppLock extends Fragment {
                                                     public void onComplete(@NonNull Task<byte[]> task) {
                                                         obj.setAppIcon(byteArrayToDrawable(task.getResult(),obj.getAppName()));
                                                         HomeActivity.iconEditor.putString(obj.getAppName(), Base64.encodeToString(task.getResult(), android.util.Base64.DEFAULT)).commit();
-                                                        Log.e("tag","Icon Taken From FireStorage");
                                                     }
                                                 });
                                             }else{
                                                appIconDecoded = Base64.decode(byteArrString,Base64.DEFAULT);
                                                obj.setAppIcon(byteArrayToDrawable(appIconDecoded,obj.getAppName()));
-                                               Log.e("tag","Icon Taken From Shared Preference");
                                             }
                                             updateLockStatus(obj.getAppName());
                                             arrayList.add(obj);
@@ -248,9 +248,13 @@ public class ParentAppLock extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String childName = document.getString("LinkChild");
+                        if(childName!=null){
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("LockStatus",HomeActivity.lockSharedPreference.getBoolean(appName,false));
                         db.collection(childName).document(appName).update(hashMap);
+                        }else{
+                            Log.e("tag","child name is null");
+                        }
 
                     }
                 }
@@ -289,7 +293,8 @@ public class ParentAppLock extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if(item.getItemId()==R.id.setPatternOption){
-            Toast.makeText(getContext(), "Set Pattern", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), SetPatternActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
