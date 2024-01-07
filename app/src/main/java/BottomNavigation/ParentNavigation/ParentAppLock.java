@@ -5,7 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,8 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +63,7 @@ public class ParentAppLock extends Fragment {
 
     RecyclerView recyclerView;
 
-    TextView appListName;
+    Toolbar appListToolbar;
 
     FirebaseAuth mAuth;
 
@@ -71,7 +76,7 @@ public class ParentAppLock extends Fragment {
     ArrayList<ParentAppListModel> arrayList;
     ParentAppListAdapter parentAppListAdapter;
 
-    androidx.appcompat.widget.SearchView searchView;
+    android.widget.SearchView searchView;
     String childName;
     byte[] appIconDecoded;
     final long ONE_MEGABYTE = 1024 * 1024;
@@ -113,21 +118,7 @@ public class ParentAppLock extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parent_app_lock, container, false);
         recyclerView = view.findViewById(R.id.parentAppListRV);
-        appListName = view.findViewById(R.id.appListNameTV);
-        searchView = view.findViewById(R.id.parentAppListSV);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterAppList(newText);
-                return true;
-            }
-        });
+        appListToolbar = view.findViewById(R.id.appListToolbar);
 
         init();
         setAppListName();
@@ -144,6 +135,7 @@ public class ParentAppLock extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
         arrayList = new ArrayList<>();
+        setAppListToolbar();
     }
 
     void setAppListName() {
@@ -154,7 +146,7 @@ public class ParentAppLock extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String childName = document.getString("LinkChild");
-                        appListName.setText(childName + " Apps");
+                        appListToolbar.setTitle(childName + " Apps");
 
                     }
                 }
@@ -264,5 +256,41 @@ public class ParentAppLock extends Fragment {
                 }
             }
         });
+    }
+    void setAppListToolbar(){
+        setHasOptionsMenu(true);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(appListToolbar);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.option_parent,menu);
+
+        MenuItem menuItem = menu.findItem(R.id.searchViewOption);
+        searchView = (android.widget.SearchView) menuItem.getActionView();
+
+        searchView.setQueryHint("Search App Here....");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterAppList(newText);
+                return true;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId()==R.id.setPatternOption){
+            Toast.makeText(getContext(), "Set Pattern", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

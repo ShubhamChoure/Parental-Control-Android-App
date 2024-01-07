@@ -12,29 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/appListNameTV"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/appListToolbar"
             android:layout_width="0dp"
             android:layout_height="?actionBarSize"
             android:padding="5dp"
-            android:text="PARENT_APP_LOCK"
+            app:title="PARENT_APP_LOCK"
             android:textAlignment="center"
             android:textSize="20dp"
+            app:titleTextColor="#FFFFFF"
             android:textStyle="bold"
+            android:background="#445FD2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/parentAppListSV"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appListNameTV"
-            android:hint="Search For App....."
-            >
-        </androidx.appcompat.widget.SearchView>
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/option_parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/parentAppListRV"
@@ -43,7 +35,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/parentAppListSV">
+            app:layout_constraintTop_toBottomOf="@+id/appListToolbar">
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item
+    android:id="@+id/searchViewOption"
+    android:icon="@drawable/baseline_manage_search_24"
+    android:title="Search App"
+    app:showAsAction="ifRoom|collapseActionView"
+    app:actionViewClass="android.widget.SearchView"
+    >
+</item>
+    <item
+    android:title="Set Pattern"
+    android:icon="@drawable/set_pattern_icon"
+    android:id="@+id/setPatternOption"
+    app:showAsAction="collapseActionView"
+    android:enabled="true">
+</item>
+</menu>
