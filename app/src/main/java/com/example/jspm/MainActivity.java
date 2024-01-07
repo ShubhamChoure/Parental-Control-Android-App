@@ -11,10 +11,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,12 +39,19 @@ ImageView parentIV,childIV;
 FirebaseAuth mAuth;
 FirebaseFirestore db;
 
+static Boolean overlayPermissionFlag;
+
+public static final int reqCode = 169;
+
     ArrayList<String> userList;
+
+    public static Context MyContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        askForSystemAlertWindowPermission(((AppCompatActivity)MainActivity.this),reqCode);
         parentIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,14 +68,17 @@ FirebaseFirestore db;
                 startActivity(ChildLoginIntent);
             }
         });
+
     }
     void init()
     {
+        MyContext = MainActivity.this;
         mAuth = FirebaseAuth.getInstance();
         parentIV = findViewById(R.id.parentlogin);
         childIV = findViewById(R.id.childlogin);
         db = FirebaseFirestore.getInstance();
         userList = new ArrayList<>();
+        overlayPermissionFlag = false;
     }
     @Override
     public void onStart() {
@@ -134,5 +147,14 @@ FirebaseFirestore db;
             granted = (mode == AppOpsManager.MODE_ALLOWED);
         }
         return  granted;
+    }
+    public static void askForSystemAlertWindowPermission(AppCompatActivity activity, int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
+            activity.startActivityForResult(intent, requestCode);
+            overlayPermissionFlag = true;
+        } else {
+            overlayPermissionFlag = false;
+        }
     }
 }

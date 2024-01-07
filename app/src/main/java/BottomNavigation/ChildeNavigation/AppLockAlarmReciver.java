@@ -15,9 +15,15 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.jspm.MainActivity;
+
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import Locks.PopUpPatternLock;
 
 public class AppLockAlarmReciver extends BroadcastReceiver {
 
@@ -63,6 +69,9 @@ public class AppLockAlarmReciver extends BroadcastReceiver {
                             Log.e("tagAppOpen", appName + " is launched");
                             if(childlockSharedPreference.getBoolean(appName,false)){
                             Log.e("tagAppOpen",appName + " is locked");
+                            Intent intent = new Intent(context, PopUpPatternLock.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
                             }
                         } catch (Exception e){
                             Log.e("tagAppOpen",e.toString());

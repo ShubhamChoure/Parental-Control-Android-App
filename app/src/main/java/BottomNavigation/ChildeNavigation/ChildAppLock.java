@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -68,6 +69,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListAdapter;
 import BottomNavigation.ChildeNavigation.AppListAdapter.AppListModel;
@@ -107,6 +110,12 @@ public class ChildAppLock extends Fragment {
     Toolbar toolbar;
     long alarmTime;
     public static final int ALARM_REQ_CODE = 100;
+
+    public static SharedPreferences childlockSharedPreference;
+
+    public static SharedPreferences.Editor childlockEditor;
+
+    public static final String PREF_LOCK = "ChildLockStatus";
 
 
 
@@ -157,6 +166,7 @@ public class ChildAppLock extends Fragment {
         UploadAppList();
         UploadAppList();
         startAlarmManager();
+        downloadPatternLock();
         return view;
     }
     void init()
@@ -168,6 +178,8 @@ public class ChildAppLock extends Fragment {
         storageReference = firebaseStorage.getReference();
         mAuth = FirebaseAuth.getInstance();
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        childlockSharedPreference = getActivity().getSharedPreferences(PREF_LOCK,Context.MODE_PRIVATE);
+        childlockEditor = childlockSharedPreference.edit();
     }
 
     void setApplist()
@@ -295,7 +307,7 @@ public class ChildAppLock extends Fragment {
                             Log.e("tag",e.toString());
                         }
                     }
-                    Toast.makeText(getContext(), "Lock Status Update Complete", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "Lock Status Update Complete", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Log.e("tag","Download lock status task failed");
@@ -342,5 +354,26 @@ public class ChildAppLock extends Fragment {
         toolbar.setTitle("App Lock");
         setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+    }
+    void downloadPatternLock(){
+        try {
+            db.collection(mAuth.getCurrentUser().getEmail()+" Pattern").document(mAuth.getCurrentUser().getEmail()+" Pattern").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        ArrayList<Integer> patternLock = (ArrayList<Integer>) task.getResult().get("Pattern");
+                         StringBuilder stringBuilder = new StringBuilder();
+                         for(int i=0; i < patternLock.size() ; i++){
+                             stringBuilder.append(patternLock.get(i)).append(",");
+                         }
+                        childlockEditor.putString("Pattern Lock Key",stringBuilder.toString()).commit();
+                    }else{
+                        Log.e("tag","Download Pattern Lock Failed");
+                    }
+                }
+            });
+        }catch (Exception e){
+        Log.e("tag",e.toString());
+        }
     }
 }
