@@ -157,7 +157,6 @@ public class ParentAppLock extends Fragment {
     }
 
     void getChildAppList() {
-
         db.collection("Relation").whereEqualTo("Mail", mAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -222,12 +221,13 @@ public class ParentAppLock extends Fragment {
     }
 
     void setAppListAdapter(String childName) {
-
-        parentAppListAdapter = new ParentAppListAdapter(getContext(), arrayList,childName);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(parentAppListAdapter);
-
-        Log.e("tag", "AppName : " + arrayList.get(0).getAppName());
+  try {
+      parentAppListAdapter = new ParentAppListAdapter(getContext(), arrayList, childName);
+      recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+      recyclerView.setAdapter(parentAppListAdapter);
+  }catch (Exception e){
+      Log.e("tag",e.toString());
+  }
     }
 
     Drawable byteArrayToDrawable(byte[] bar,String appName) {
