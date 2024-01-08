@@ -215,13 +215,15 @@ public class ChildAppLock extends Fragment {
             hashMap.put("PackageName",i.getPackageName());
 
             CollectionReference collectionReference = db.collection(ChildHomeActivity.mAuth.getCurrentUser().getEmail());
-            String id = i.getAppName();
-            try {
-                collectionReference.document(id).update(hashMap);
-            }
-            catch (Exception  e)
-            {
-             Log.e("tag", e.toString());
+            String id = i.getAppName().trim();
+            if(id!=null || !id.equals("")) {
+                try {
+                    collectionReference.document(id).update(hashMap);
+                } catch (Exception e) {
+
+                    collectionReference.document(id).set(hashMap);
+                    Log.e("tag", e.toString());
+                }
             }
         storageReference.child("Icon/"+i.getAppName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
              @Override
@@ -260,6 +262,9 @@ public class ChildAppLock extends Fragment {
     }
 
     void uploadAppIcon(byte[] data,StorageReference iconStrRef){
+        try {
+
+
         UploadTask uploadTask = iconStrRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -272,6 +277,10 @@ public class ChildAppLock extends Fragment {
                 Log.e("tag","Icon Upload Sucessful");
             }
         });
+    }catch (Exception e)
+        {
+            Log.e("tag",e.toString());
+        }
     }
     private void filterAppList(String newText) {
         ArrayList<AppListModel> filteredList = new ArrayList<>();
@@ -361,13 +370,19 @@ public class ChildAppLock extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if(task.isSuccessful()){
+                        try {
+
                         ArrayList<Integer> patternLock = (ArrayList<Integer>) task.getResult().get("Pattern");
                          StringBuilder stringBuilder = new StringBuilder();
                          for(int i=0; i < patternLock.size() ; i++){
                              stringBuilder.append(patternLock.get(i)).append(",");
                          }
                         childlockEditor.putString("Pattern Lock Key",stringBuilder.toString()).commit();
-                    }else{
+                    }catch (Exception e)
+                        {
+                            Log.e("tag",e.toString());
+                        }
+                    } else{
                         Log.e("tag","Download Pattern Lock Failed");
                     }
                 }

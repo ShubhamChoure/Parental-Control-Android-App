@@ -236,12 +236,19 @@ public class ParentAppLock extends Fragment {
         return drawable;
     }
     private void filterAppList(String newText) {
-        ArrayList<ParentAppListModel> filteredList = new ArrayList<>();
-        for(ParentAppListModel i : arrayList){
-            if(i.getAppName().toLowerCase().trim().contains(newText.toLowerCase().trim())){
-                filteredList.add(i);
-                parentAppListAdapter.setFilteredList(filteredList);
+        try {
+
+            ArrayList<ParentAppListModel> filteredList = new ArrayList<>();
+            for (ParentAppListModel i : arrayList) {
+                if (i.getAppName().toLowerCase().trim().contains(newText.toLowerCase().trim())) {
+                    filteredList.add(i);
+                    parentAppListAdapter.setFilteredList(filteredList);
+                }
             }
+        }
+        catch(Exception e)
+        {
+            Log.e("tag",e.toString());
         }
     }
 
@@ -250,6 +257,7 @@ public class ParentAppLock extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    try {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String childName = document.getString("LinkChild");
 
@@ -261,8 +269,13 @@ public class ParentAppLock extends Fragment {
                         }else{
                             Log.e("tag","child name is null");
                         }
-
+                       }
                     }
+                    catch (Exception e)
+                    {
+                        Log.e("tag",e.toString());
+                    }
+
                 }
             }
         });
