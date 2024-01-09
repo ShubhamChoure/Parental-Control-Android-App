@@ -207,6 +207,13 @@ public class ChildAppLock extends Fragment {
     void UploadAppList(){
 
 
+    /*
+      HashMap<String,Object> testMap = new HashMap<>();
+        testMap.put("Shubham","Anandi");
+        db.collection("test").add(testMap);
+        */
+
+
         Toast.makeText(getContext(), "Wait till app upload is complete", Toast.LENGTH_SHORT).show();
         for (AppListModel i : appListModels) {
             HashMap<String,Object> hashMap;
@@ -216,14 +223,42 @@ public class ChildAppLock extends Fragment {
 
             CollectionReference collectionReference = db.collection(ChildHomeActivity.mAuth.getCurrentUser().getEmail());
             String id = i.getAppName().trim();
-            if(id!=null || !id.equals("")) {
+            if(!id.contains("/")) {
                 try {
-                    collectionReference.document(id).update(hashMap);
+                    collectionReference.document(id).update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                Log.e("tagSlash", id + " is Updated");
+                            }else{
+                                collectionReference.document(id).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Log.e("tagSlash",id+" is Uploaded");
+                                        }else{
+                                            Log.e("tagSlash",id+" is Uploaded Failed");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
                 } catch (Exception e) {
-
-                    collectionReference.document(id).set(hashMap);
+                    collectionReference.document(id).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Log.e("tagSlash",id+" is Uploaded");
+                            }else{
+                                Log.e("tagSlash",id+" is Uploaded Failed");
+                            }
+                        }
+                    });
                     Log.e("tag", e.toString());
                 }
+            }else{
+                Log.e("tagSlash",id+" is app with slash");
             }
         storageReference.child("Icon/"+i.getAppName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
              @Override

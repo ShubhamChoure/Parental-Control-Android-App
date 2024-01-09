@@ -51,7 +51,7 @@ public static final int reqCode = 169;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        askForSystemAlertWindowPermission(((AppCompatActivity)MainActivity.this),reqCode);
+       // askForSystemAlertWindowPermission(((AppCompatActivity)MainActivity.this),reqCode);
         parentIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
