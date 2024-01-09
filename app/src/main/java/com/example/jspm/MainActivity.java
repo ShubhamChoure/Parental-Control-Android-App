@@ -68,7 +68,7 @@ public static final int reqCode = 169;
                 startActivity(ChildLoginIntent);
             }
         });
-
+      askForSystemAlertWindowPermission(this,reqCode);
     }
     void init()
     {
@@ -83,6 +83,7 @@ public static final int reqCode = 169;
     @Override
     public void onStart() {
         super.onStart();
+
         // Check if user is signed in (non-null) and update UI accordingly.
         if(checkPermission()) {
             FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -114,7 +115,7 @@ public static final int reqCode = 169;
                 }
             }
         } else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+           AlertDialog.Builder  builder = new AlertDialog.Builder(this);
             builder.setTitle("Permission Not Granted !!!!");
             builder.setMessage("Allow Usage Permission");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -132,6 +133,7 @@ public static final int reqCode = 169;
             });
             builder.show();
         }
+
     }
     boolean checkPermission()
     {
@@ -157,4 +159,5 @@ public static final int reqCode = 169;
             overlayPermissionFlag = false;
         }
     }
+
 }

@@ -207,12 +207,6 @@ public class ChildAppLock extends Fragment {
     void UploadAppList(){
 
 
-    /*
-      HashMap<String,Object> testMap = new HashMap<>();
-        testMap.put("Shubham","Anandi");
-        db.collection("test").add(testMap);
-        */
-
 
         Toast.makeText(getContext(), "Wait till app upload is complete", Toast.LENGTH_SHORT).show();
         for (AppListModel i : appListModels) {
@@ -231,6 +225,7 @@ public class ChildAppLock extends Fragment {
                             if(task.isSuccessful()) {
                                 Log.e("tagSlash", id + " is Updated");
                             }else{
+                                Log.e("tagSlash", id + " is Update Failed");
                                 collectionReference.document(id).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
