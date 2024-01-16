@@ -29,6 +29,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.AppCheckProvider;
+import com.google.firebase.appcheck.AppCheckProviderFactory;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -45,6 +51,7 @@ import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListAdapter;
 import BottomNavigation.ParentNavigation.ParentListAdapter.ParentAppListModel;
 import HomeActivity.ParentHomeActivity.HomeActivity;
 import Locks.SetPatternActivity;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,6 +86,8 @@ public class ParentAppLock extends Fragment {
     ParentAppListAdapter parentAppListAdapter;
 
     android.widget.SearchView searchView;
+
+    FirebaseAppCheck firebaseAppCheck;
     String childName;
     byte[] appIconDecoded;
     final long ONE_MEGABYTE = 1024 * 1024;
@@ -122,6 +131,7 @@ public class ParentAppLock extends Fragment {
         recyclerView = view.findViewById(R.id.parentAppListRV);
         appListToolbar = view.findViewById(R.id.appListToolbar);
 
+        firebaseAppCheck();
         init();
         setAppListName();
         getChildAppList();
@@ -317,4 +327,11 @@ public class ParentAppLock extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    void firebaseAppCheck(){
+        FirebaseApp.initializeApp(getContext());
+        firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance());
+    }
+
 }
