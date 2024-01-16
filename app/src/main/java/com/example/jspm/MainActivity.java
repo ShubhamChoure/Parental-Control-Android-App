@@ -68,7 +68,6 @@ public static final int reqCode = 169;
                 startActivity(ChildLoginIntent);
             }
         });
-      askForSystemAlertWindowPermission(this,reqCode);
     }
     void init()
     {
@@ -122,6 +121,7 @@ public static final int reqCode = 169;
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    askForSystemAlertWindowPermission(MainActivity.this,reqCode);
                     MainActivity.this.startActivity(intent);
                 }
             });
