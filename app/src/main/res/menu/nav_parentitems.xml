@@ -6,8 +6,14 @@
         android:title="App Lock">
     </item>
     <item
+        android:id="@+id/nav_parentMap"
+        android:icon="@drawable/baseline_location_on_24"
+        android:title="Location">
+    </item>
+    <item
         android:id="@+id/nav_parentAccount"
         android:icon="@drawable/baseline_account_circle_24"
         android:title="Account">
     </item>
+
 </menu>

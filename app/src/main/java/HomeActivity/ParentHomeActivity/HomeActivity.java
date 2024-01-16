@@ -22,11 +22,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import BottomNavigation.ParentNavigation.ParentAccount;
 import BottomNavigation.ParentNavigation.ParentAppLock;
+import BottomNavigation.ParentNavigation.ParentMap;
 
 public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationViewpar;
-    Fragment parentaccount,parentapplock;
+    Fragment parentaccount,parentapplock,parentMap;
 
     public static SharedPreferences lockSharedPreference , iconSharedPreference;
     public static SharedPreferences.Editor lockEditor,iconEditor;
@@ -53,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
                 else if (id==R.id.nav_parentAccount)
                 {
                   switchFragments(parentaccount,false);
+                } else if (id==R.id.nav_parentMap) {
+                    switchFragments(parentMap,false);
                 }
                 return true;
             }
@@ -79,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationViewpar = findViewById(R.id.BottomNavigationViewpar);
         parentaccount = new ParentAccount();
         parentapplock = new ParentAppLock();
+        parentMap = new ParentMap();
         ParentHomeContext = HomeActivity.this;
         iconSharedPreference = getSharedPreferences(PREF_APP_ICON,MODE_PRIVATE);
         lockSharedPreference = getSharedPreferences(PREF_LOCK,MODE_PRIVATE);

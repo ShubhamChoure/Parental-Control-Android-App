@@ -2,6 +2,7 @@ package com.example.jspm;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
@@ -41,7 +42,7 @@ FirebaseFirestore db;
 
 static Boolean overlayPermissionFlag;
 
-public static final int reqCode = 169;
+public static final int reqCode = 169,PERMISSION_REQUEST_CODE=6969;
 
     ArrayList<String> userList;
 
@@ -51,6 +52,7 @@ public static final int reqCode = 169;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        checkAndRequestPermissions();
        // askForSystemAlertWindowPermission(((AppCompatActivity)MainActivity.this),reqCode);
         parentIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,4 +162,37 @@ public static final int reqCode = 169;
         }
     }
 
+    private void checkAndRequestPermissions() {
+        String[] permissions = {
+                "android.permission.INTERNET",
+                "android.permission.SYSTEM_ALERT_WINDOW",
+                "android.permission.QUERY_ALL_PACKAGES",
+                "android.permission.PACKAGE_USAGE_STATS",
+                "android.permission.ACCESS_NETWORK_STATE",
+                "android.permission.ACCESS_FINE_LOCATION"
+        };
+
+        // Check if the app has permissions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!hasPermissions(this, permissions)) {
+                // Request permissions
+                ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+            } else {
+                // Permissions already granted, proceed with your logic
+
+            }
+        } else {
+            // Permissions are implicitly granted on versions below M
+
+        }
+    }
+
+    private boolean hasPermissions(Context context, String[] permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
