@@ -1,6 +1,7 @@
 package BottomNavigation.ChildeNavigation;
 
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,11 +46,16 @@ import com.amrdeveloper.lottiedialog.LottieDialog;
 import com.example.jspm.MainActivity;
 import com.example.jspm.R;
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.location.CurrentLocationRequest;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -94,6 +102,7 @@ public class ChildAppLock extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    FusedLocationProviderClient fusedLocationProviderClient;
     RecyclerView chlidAppListRV;
     AppListAdapter appListAdapter;
     ArrayList<AppListModel> appListModels;
@@ -101,7 +110,9 @@ public class ChildAppLock extends Fragment {
     FirebaseFirestore db;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    FirebaseDatabase firebaseDatabase;
 
+    DatabaseReference databaseReference;
     android.widget.SearchView searchView;
 
     FirebaseAuth mAuth;
@@ -116,7 +127,6 @@ public class ChildAppLock extends Fragment {
     public static SharedPreferences.Editor childlockEditor;
 
     public static final String PREF_LOCK = "ChildLockStatus";
-
 
 
     public ChildAppLock() {
@@ -151,7 +161,6 @@ public class ChildAppLock extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -162,6 +171,7 @@ public class ChildAppLock extends Fragment {
 
         setToolbar();
         init();
+        uploadLocation();
         setApplist();
         UploadAppList();
         UploadAppList();
@@ -169,8 +179,8 @@ public class ChildAppLock extends Fragment {
         downloadPatternLock();
         return view;
     }
-    void init()
-    {
+
+    void init() {
 
         appListModels = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
@@ -178,22 +188,26 @@ public class ChildAppLock extends Fragment {
         storageReference = firebaseStorage.getReference();
         mAuth = FirebaseAuth.getInstance();
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        childlockSharedPreference = getActivity().getSharedPreferences(PREF_LOCK,Context.MODE_PRIVATE);
+        childlockSharedPreference = getActivity().getSharedPreferences(PREF_LOCK, Context.MODE_PRIVATE);
         childlockEditor = childlockSharedPreference.edit();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+        firebaseDatabase = FirebaseDatabase.getInstance("https://parent-control-eb1f8-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        String childNameTemp = mAuth.getCurrentUser().getEmail().toString();
+        int indexOfDot = childNameTemp.indexOf('.');
+        databaseReference = firebaseDatabase.getReference(childNameTemp.substring(0,indexOfDot));
     }
 
-    void setApplist()
-    {
+    void setApplist() {
         getUserApp();
-        appListAdapter = new AppListAdapter(getContext(),appListModels);
+        appListAdapter = new AppListAdapter(getContext(), appListModels);
         chlidAppListRV.setLayoutManager(new LinearLayoutManager(getContext()));
         chlidAppListRV.setAdapter(appListAdapter);
     }
-    void getUserApp()
-    {
+
+    void getUserApp() {
         PackageManager pm = getActivity().getPackageManager();
         List<ApplicationInfo> packageList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        for (ApplicationInfo i:packageList) {
+        for (ApplicationInfo i : packageList) {
 
             AppListModel obj = new AppListModel();
             obj.setAppName(i.loadLabel(pm).toString());
@@ -204,35 +218,34 @@ public class ChildAppLock extends Fragment {
 
     }
 
-    void UploadAppList(){
-
+    void UploadAppList() {
 
 
         Toast.makeText(getContext(), "Wait till app upload is complete", Toast.LENGTH_SHORT).show();
         for (AppListModel i : appListModels) {
-            HashMap<String,Object> hashMap;
-            hashMap = new HashMap<String,Object>();
-            hashMap.put("AppName",i.getAppName());
-            hashMap.put("PackageName",i.getPackageName());
+            HashMap<String, Object> hashMap;
+            hashMap = new HashMap<String, Object>();
+            hashMap.put("AppName", i.getAppName());
+            hashMap.put("PackageName", i.getPackageName());
 
             CollectionReference collectionReference = db.collection(ChildHomeActivity.mAuth.getCurrentUser().getEmail());
             String id = i.getAppName().trim();
-            if(!id.contains("/")) {
+            if (!id.contains("/")) {
                 try {
                     collectionReference.document(id).update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
+                            if (task.isSuccessful()) {
                                 Log.e("tagSlash", id + " is Updated");
-                            }else{
+                            } else {
                                 Log.e("tagSlash", id + " is Update Failed");
                                 collectionReference.document(id).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Log.e("tagSlash",id+" is Uploaded");
-                                        }else{
-                                            Log.e("tagSlash",id+" is Uploaded Failed");
+                                        if (task.isSuccessful()) {
+                                            Log.e("tagSlash", id + " is Uploaded");
+                                        } else {
+                                            Log.e("tagSlash", id + " is Uploaded Failed");
                                         }
                                     }
                                 });
@@ -243,126 +256,123 @@ public class ChildAppLock extends Fragment {
                     collectionReference.document(id).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Log.e("tagSlash",id+" is Uploaded");
-                            }else{
-                                Log.e("tagSlash",id+" is Uploaded Failed");
+                            if (task.isSuccessful()) {
+                                Log.e("tagSlash", id + " is Uploaded");
+                            } else {
+                                Log.e("tagSlash", id + " is Uploaded Failed");
                             }
                         }
                     });
                     Log.e("tag", e.toString());
                 }
-            }else{
-                Log.e("tagSlash",id+" is app with slash");
+            } else {
+                Log.e("tagSlash", id + " is app with slash");
             }
-        storageReference.child("Icon/"+i.getAppName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-             @Override
-             public void onSuccess(Uri uri) {
+            storageReference.child("Icon/" + i.getAppName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
 
-                 Log.e("tag","Icon Already Uploaded");
+                    Log.e("tag", "Icon Already Uploaded");
 
-             }
-         }).addOnFailureListener(new OnFailureListener() {
-             @Override
-             public void onFailure(@NonNull Exception e) {
-                 StorageReference iconStrRef = storageReference.child("Icon").child(i.getAppName());
-                 byte[] data = bitmapTobyteArray(drawableToBitmap(i.getAppIcon()));
-                 uploadAppIcon(data,iconStrRef);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    StorageReference iconStrRef = storageReference.child("Icon").child(i.getAppName());
+                    byte[] data = bitmapTobyteArray(drawableToBitmap(i.getAppIcon()));
+                    uploadAppIcon(data, iconStrRef);
 
-             }
-         });
+                }
+            });
         }
         downloadLockstatus();
     }
 
 
-    byte[] bitmapTobyteArray(Bitmap bitmap){
+    byte[] bitmapTobyteArray(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
         return data;
     }
-    Bitmap drawableToBitmap(Drawable drawable)
-    {
-                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);
-                return bitmap;
+
+    Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
-    void uploadAppIcon(byte[] data,StorageReference iconStrRef){
+    void uploadAppIcon(byte[] data, StorageReference iconStrRef) {
         try {
 
 
-        UploadTask uploadTask = iconStrRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("tag","icon upload unsucessful");
-            }
-        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                Log.e("tag","Icon Upload Sucessful");
-            }
-        });
-    }catch (Exception e)
-        {
-            Log.e("tag",e.toString());
+            UploadTask uploadTask = iconStrRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("tag", "icon upload unsucessful");
+                }
+            }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    Log.e("tag", "Icon Upload Sucessful");
+                }
+            });
+        } catch (Exception e) {
+            Log.e("tag", e.toString());
         }
     }
+
     private void filterAppList(String newText) {
         ArrayList<AppListModel> filteredList = new ArrayList<>();
-        for(AppListModel i : appListModels){
-            if(i.getAppName().toLowerCase().trim().contains(newText.toLowerCase().trim())){
+        for (AppListModel i : appListModels) {
+            if (i.getAppName().toLowerCase().trim().contains(newText.toLowerCase().trim())) {
                 filteredList.add(i);
                 appListAdapter.setFilteredList(filteredList);
             }
         }
     }
-    void downloadLockstatus()
-    {
+
+    void downloadLockstatus() {
         db.collection(mAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful())
-                {
-                    for (QueryDocumentSnapshot document : task.getResult())
-                    {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
                         try {
                             String appName = document.get("AppName").toString();
                             Boolean lockStatus = (Boolean) document.get("LockStatus");
-                            if (lockStatus != null)
-                            {
-                                ChildHomeActivity.childlockEditor.putBoolean(appName,lockStatus).commit();
-                                Log.e("tagStatus","lock status updated");
+                            if (lockStatus != null) {
+                                ChildHomeActivity.childlockEditor.putBoolean(appName, lockStatus).commit();
+                                Log.e("tagStatus", "lock status updated");
+                            } else {
+                                ChildHomeActivity.childlockEditor.putBoolean(appName, false).commit();
+                                Log.e("tagStatus", "lock status is null");
                             }
-                            else {
-                                ChildHomeActivity.childlockEditor.putBoolean(appName,false).commit();
-                                Log.e("tagStatus","lock status is null");
-                            }
-                        }catch (Exception e){
-                            Log.e("tag",e.toString());
+                        } catch (Exception e) {
+                            Log.e("tag", e.toString());
                         }
                     }
                     //Toast.makeText(getContext(), "Lock Status Update Complete", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Log.e("tag","Download lock status task failed");
+                } else {
+                    Log.e("tag", "Download lock status task failed");
                 }
             }
         });
     }
-    void startAlarmManager(){
-        Intent intent = new Intent(getContext(),AppLockAlarmReciver.class);
-        PendingIntent pe = PendingIntent.getBroadcast(getContext(),ALARM_REQ_CODE,intent,PendingIntent.FLAG_MUTABLE);
+
+    void startAlarmManager() {
+        Intent intent = new Intent(getContext(), AppLockAlarmReciver.class);
+        PendingIntent pe = PendingIntent.getBroadcast(getContext(), ALARM_REQ_CODE, intent, PendingIntent.FLAG_MUTABLE);
         alarmTime = System.currentTimeMillis() + 2 * 1000;
-        alarmManager.set(AlarmManager.RTC,alarmTime,pe);
+        alarmManager.set(AlarmManager.RTC, alarmTime, pe);
     }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.option_child,menu);
+        inflater.inflate(R.menu.option_child, menu);
         MenuItem menuItem = menu.findItem(R.id.searchViewChildOption);
         searchView = (android.widget.SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -382,43 +392,59 @@ public class ChildAppLock extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.updateStatusOption)
-        {
+        if (item.getItemId() == R.id.updateStatusOption) {
             downloadLockstatus();
+            uploadLocation();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    void setToolbar(){
+    void setToolbar() {
         toolbar.setTitle("App Lock");
         setHasOptionsMenu(true);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
-    void downloadPatternLock(){
+
+    void downloadPatternLock() {
         try {
-            db.collection(mAuth.getCurrentUser().getEmail()+" Pattern").document(mAuth.getCurrentUser().getEmail()+" Pattern").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            db.collection(mAuth.getCurrentUser().getEmail() + " Pattern").document(mAuth.getCurrentUser().getEmail() + " Pattern").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         try {
 
-                        ArrayList<Integer> patternLock = (ArrayList<Integer>) task.getResult().get("Pattern");
-                         StringBuilder stringBuilder = new StringBuilder();
-                         for(int i=0; i < patternLock.size() ; i++){
-                             stringBuilder.append(patternLock.get(i)).append(",");
-                         }
-                        childlockEditor.putString("Pattern Lock Key",stringBuilder.toString()).commit();
-                    }catch (Exception e)
-                        {
-                            Log.e("tag",e.toString());
+                            ArrayList<Integer> patternLock = (ArrayList<Integer>) task.getResult().get("Pattern");
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (int i = 0; i < patternLock.size(); i++) {
+                                stringBuilder.append(patternLock.get(i)).append(",");
+                            }
+                            childlockEditor.putString("Pattern Lock Key", stringBuilder.toString()).commit();
+                        } catch (Exception e) {
+                            Log.e("tag", e.toString());
                         }
-                    } else{
-                        Log.e("tag","Download Pattern Lock Failed");
+                    } else {
+                        Log.e("tag", "Download Pattern Lock Failed");
                     }
                 }
             });
-        }catch (Exception e){
-        Log.e("tag",e.toString());
+        } catch (Exception e) {
+            Log.e("tag", e.toString());
         }
+    }
+
+    void uploadLocation() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                     Location location = task.getResult();
+                     Log.e("6969",location.getLatitude()+" and "+location.getLongitude());
+                     databaseReference.setValue(location.getLatitude()+" and "+location.getLongitude());
+            }
+        });
     }
 }

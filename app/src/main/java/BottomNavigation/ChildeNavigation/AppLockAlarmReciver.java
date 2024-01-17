@@ -13,8 +13,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.jspm.MainActivity;
@@ -93,5 +96,4 @@ public class AppLockAlarmReciver extends BroadcastReceiver {
     void init(Context context){
         childlockSharedPreference = context.getSharedPreferences(PREF_LOCK,Context.MODE_PRIVATE);
     }
-
 }
