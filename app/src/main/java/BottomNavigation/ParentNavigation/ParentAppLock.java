@@ -36,6 +36,8 @@ import com.google.firebase.appcheck.AppCheckProviderFactory;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -77,6 +79,8 @@ public class ParentAppLock extends Fragment {
     FirebaseAuth mAuth;
 
     FirebaseFirestore db;
+
+
 
     FirebaseStorage firebaseStorage;
 
@@ -141,12 +145,14 @@ public class ParentAppLock extends Fragment {
 
 
 
+
     void init() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
         arrayList = new ArrayList<>();
+
         setAppListToolbar();
     }
 
@@ -174,7 +180,6 @@ public class ParentAppLock extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         childName = document.getString("LinkChild");
                         if (childName != null) {
-                            Log.e("tag", "collection found!!!!!!!!!!!");
                             db.collection(childName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
