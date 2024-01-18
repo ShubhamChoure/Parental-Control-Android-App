@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import BottomNavigation.ChildeNavigation.ChildAppLock;
 import BottomNavigation.ChildeNavigation.ChildeAccount;
+import BottomNavigation.ChildeNavigation.LocationUploadService;
 
 public class ChildHomeActivity extends AppCompatActivity {
 
@@ -42,6 +46,7 @@ public class ChildHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_home);
         init();
+        startLocationUploadForegroundService();
         bottomNavigationView.setSelectedItemId(R.id.nav_lock);
 
         switchFragments(new ChildAppLock(),true);
@@ -84,5 +89,12 @@ public class ChildHomeActivity extends AppCompatActivity {
         MyContext = ChildHomeActivity.this;
         childlockSharedPreference = getSharedPreferences(PREF_LOCK,MODE_PRIVATE);
         childlockEditor = childlockSharedPreference.edit();
+    }
+    void startLocationUploadForegroundService(){
+        Intent intent = new Intent(this, LocationUploadService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+            Log.e("6969","Starting Foreground service");
+        }
     }
 }

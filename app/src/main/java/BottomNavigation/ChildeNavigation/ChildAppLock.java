@@ -175,7 +175,7 @@ public class ChildAppLock extends Fragment {
         setApplist();
         UploadAppList();
         UploadAppList();
-        startAlarmManager();
+       // startAlarmManager();
         downloadPatternLock();
         return view;
     }

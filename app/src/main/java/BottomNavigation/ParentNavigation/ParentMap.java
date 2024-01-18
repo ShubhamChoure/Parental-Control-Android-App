@@ -110,10 +110,10 @@ public class ParentMap extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         location = new Location("");
         startMarker = new Marker(mapView);
+        mapController = mapView.getController();
         firebaseDatabase = FirebaseDatabase.getInstance("https://parent-control-eb1f8-default-rtdb.asia-southeast1.firebasedatabase.app/");
     }
     void setMap(Location location){
-        mapController = mapView.getController();
         startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
         mapController.setZoom(17.9);
         mapController.setCenter(startPoint);
