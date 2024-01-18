@@ -441,9 +441,17 @@ public class ChildAppLock extends Fragment {
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                     Location location = task.getResult();
-                     Log.e("6969",location.getLatitude()+" and "+location.getLongitude());
-                     databaseReference.setValue(location.getLatitude()+" and "+location.getLongitude());
+                if(task.isSuccessful()) {
+                    if(task.getResult()!=null) {
+                        Location location = task.getResult();
+                        Log.e("6969", location.getLatitude() + " and " + location.getLongitude());
+                        databaseReference.setValue(location.getLatitude() + " and " + location.getLongitude());
+                    }else{
+                        Log.e("6969","upload location task is null");
+                    }
+                }else{
+                    Log.e("6969","upload location task failed");
+                }
             }
         });
     }
