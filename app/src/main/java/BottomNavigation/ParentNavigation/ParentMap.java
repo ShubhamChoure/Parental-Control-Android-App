@@ -18,7 +18,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -95,6 +97,7 @@ public class ParentMap extends Fragment {
         mapView = view.findViewById(R.id.parentMapView);
         initMap();
         getChildName();
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -132,6 +135,7 @@ public class ParentMap extends Fragment {
                   childName = childTemp.substring(0, dotIndex);
                   Log.e("6969", "Child Name = " + childName);
                   updateMap();
+                  updateMapOnChange();
               }else{
                   Log.e("6969", "Fetching Child Name Was Unsuccessful");
               }
@@ -156,5 +160,26 @@ public class ParentMap extends Fragment {
                     setMap(location);
                 }
             });
+        }
+        void updateMapOnChange(){
+        firebaseDatabase.getReference(childName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String locationStr = (String) snapshot.getValue();
+                Log.e("6969","Location is fetched from database : "+locationStr);
+                String latStr = locationStr.substring(0,locationStr.indexOf('a')).trim();
+                String lonStr = locationStr.substring(locationStr.indexOf('d')+1).trim();
+                latitude = Double.parseDouble(latStr);
+                longitude = Double.parseDouble(lonStr);
+                location.setLatitude(latitude);
+                location.setLongitude(longitude);
+                setMap(location);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         }
     }

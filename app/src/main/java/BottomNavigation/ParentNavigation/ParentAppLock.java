@@ -140,7 +140,6 @@ public class ParentAppLock extends Fragment {
         setAppListName();
         getChildAppList();
         return view;
-
     }
 
 
@@ -338,5 +337,4 @@ public class ParentAppLock extends Fragment {
         firebaseAppCheck = FirebaseAppCheck.getInstance();
         firebaseAppCheck.installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance());
     }
-
 }
