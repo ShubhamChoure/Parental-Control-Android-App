@@ -93,6 +93,8 @@ public class ChildHomeActivity extends AppCompatActivity {
     void startLocationUploadForegroundService(){
         Intent intent = new Intent(this, LocationUploadService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String childNameTemp = mAuth.getCurrentUser().getEmail().toString();
+            intent.putExtra("user",childNameTemp);
             startForegroundService(intent);
             Log.e("6969","Starting Foreground service");
         }

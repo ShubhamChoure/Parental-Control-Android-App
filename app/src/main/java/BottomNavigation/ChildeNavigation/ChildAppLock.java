@@ -171,7 +171,7 @@ public class ChildAppLock extends Fragment {
 
         setToolbar();
         init();
-        uploadLocation();
+        //uploadLocation();
         setApplist();
         UploadAppList();
         UploadAppList();
