@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FEFEFE">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,9 +24,10 @@
             </ImageView>
 
             <com.google.android.material.textfield.TextInputLayout
+                app:hintTextColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="35dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/LoginMailETxt"
                     android:layout_width="match_parent"
@@ -35,9 +37,9 @@
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
-                    android:drawableLeft="@drawable/baseline_mail_24_blackieee"
+                    android:drawableLeft="@drawable/baseline_contact_mail_24"
                     android:hint="  Enter E-mail"
-                    android:padding="15dp"
+                    android:padding="12dp"
                     android:textStyle="italic"
                     android:textColor="@color/black"
                     tools:ignore="InefficientWeight">
@@ -61,7 +63,7 @@
                     android:drawableStart="@drawable/baseline_lock_24"
                     android:hint="  Enter Password"
                     android:inputType="textPassword"
-                    android:padding="15dp"
+                    android:padding="12dp"
                     android:textColor="@color/black"
                     android:textStyle="italic"
                     tools:ignore="SpeakableTextPresentCheck">
@@ -74,7 +76,7 @@
                 android:id="@+id/ForgetTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="right"
                 android:paddingRight="15dp"
@@ -90,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/button_desing"
                 android:padding="15dp"
