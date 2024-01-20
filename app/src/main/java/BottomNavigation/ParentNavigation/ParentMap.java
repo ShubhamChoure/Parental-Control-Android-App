@@ -1,17 +1,25 @@
 package BottomNavigation.ParentNavigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.jspm.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +39,10 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+
+import java.util.Objects;
+
+import Locks.SetPatternActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +71,8 @@ public class ParentMap extends Fragment {
     IMapController mapController;
     FirebaseDatabase firebaseDatabase;
     GeoPoint startPoint;
+    Toolbar mapToolbar;
+    SearchView  searchView;
     public ParentMap() {
         // Required empty public constructor
     }
@@ -95,8 +109,11 @@ public class ParentMap extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent_map, container, false);
         mapView = view.findViewById(R.id.parentMapView);
+        mapToolbar = view.findViewById(R.id.mapToolbar);
+        setMapToolbar();
         initMap();
         getChildName();
+
 
         // Inflate the layout for this fragment
         return view;
@@ -115,7 +132,7 @@ public class ParentMap extends Fragment {
     }
     void setMap(Location location){
         startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-        mapController.setZoom(17.9);
+        mapController.setZoom(10.0);
         mapController.setCenter(startPoint);
         startMarker.setPosition(startPoint);
         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
@@ -182,4 +199,26 @@ public class ParentMap extends Fragment {
             }
         });
         }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId()==R.id.setGeofenceOption){
+            Toast.makeText(getContext(), "Geofence", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.option_parent_map,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+    void setMapToolbar(){
+        setHasOptionsMenu(true);
+        setMenuVisibility(true);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(mapToolbar);
+    }
+}
