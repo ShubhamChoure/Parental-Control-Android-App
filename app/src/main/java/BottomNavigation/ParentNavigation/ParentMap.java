@@ -2,6 +2,7 @@ package BottomNavigation.ParentNavigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -42,7 +43,10 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.Polygon;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import Locks.SetPatternActivity;
@@ -74,9 +78,13 @@ public class ParentMap extends Fragment {
     IMapController mapController;
     FirebaseDatabase firebaseDatabase;
     GeoPoint startPoint,geofencePoint;
+    Polygon polygon;
     Toolbar mapToolbar;
     MapEventsOverlay mapEventsOverlay;
     MapEventsReceiver mapEventsReceiver;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    public static final String GeoFence_Shared_Pref_Id ="GEOFENCE_DATA";
     SearchView  searchView;
     public ParentMap() {
         // Required empty public constructor
@@ -117,7 +125,7 @@ public class ParentMap extends Fragment {
         mapToolbar = view.findViewById(R.id.mapToolbar);
         setMapToolbar();
         initMap();
-        setGeofence();
+        setGeofenceMarker();
         getChildName();
 
 
@@ -129,6 +137,8 @@ public class ParentMap extends Fragment {
         Context ctx = getActivity().getApplicationContext();
         Configuration.getInstance().load(ctx,getActivity().getSharedPreferences("ParentMap",Context.MODE_PRIVATE));
         mapView.setTileSource(TileSourceFactory.MAPNIK);
+        sharedPreferences = getContext().getSharedPreferences(GeoFence_Shared_Pref_Id,Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         location = new Location("");
@@ -211,7 +221,11 @@ public class ParentMap extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if(item.getItemId()==R.id.setGeofenceOption){
-            Toast.makeText(getContext(), "Geofence", Toast.LENGTH_SHORT).show();
+            if(geofencePoint==null){
+                Toast.makeText(getContext(), "Please Tap On Map To Select Location ", Toast.LENGTH_SHORT).show();
+            }else{
+                setGeofenceSquare();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -228,12 +242,11 @@ public class ParentMap extends Fragment {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(mapToolbar);
     }
 
-    void setGeofence(){
+    void setGeofenceMarker(){
         mapEventsReceiver = new MapEventsReceiver() {
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 geofencePoint = new GeoPoint(p.getLatitude(),p.getLongitude());
-
                 Marker marker = new Marker(mapView);
                 marker.setPosition(p);
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
@@ -251,5 +264,23 @@ public class ParentMap extends Fragment {
         };
         mapEventsOverlay = new MapEventsOverlay(mapEventsReceiver);
         mapView.getOverlays().add(mapEventsOverlay);
+    }
+
+    void setGeofenceSquare(){
+        //creating square of 500 meter
+        ArrayList<GeoPoint> squarePoints = new ArrayList<>();
+        polygon = new Polygon();
+        GeoPoint centerCo = new GeoPoint(geofencePoint.getLatitude(),geofencePoint.getLongitude());
+        GeoPoint temp = centerCo.destinationPoint(250,360);
+        GeoPoint b = temp.destinationPoint(250,90);
+        squarePoints.add(b);
+        GeoPoint d = b.destinationPoint(500,180);
+        squarePoints.add(d);
+        GeoPoint c = d.destinationPoint(500,270);
+        squarePoints.add(c);
+        GeoPoint a = c.destinationPoint(500,360);
+        squarePoints.add(a);
+        polygon.setPoints(squarePoints);
+        mapView.getOverlays().add(polygon);
     }
 }
