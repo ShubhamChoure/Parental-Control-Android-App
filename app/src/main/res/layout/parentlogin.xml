@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FEFEFE">
+    android:background="#F3F3F3">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,24 +28,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/LoginMailETxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="25dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
                     android:drawableLeft="@drawable/baseline_contact_mail_24"
-                    android:hint="  Enter E-mail"
-                    android:padding="12dp"
-                    android:textStyle="italic"
+                    android:hint="  Enter Email ID"
+                    android:padding="15dp"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     tools:ignore="InefficientWeight">
                 </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+                app:hintTextColor="@color/black"
                 android:id="@+id/PassTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,18 +56,18 @@
                     android:id="@+id/LoginPassETxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="25dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
                     android:drawableStart="@drawable/baseline_lock_24"
                     android:hint="  Enter Password"
                     android:inputType="textPassword"
-                    android:padding="12dp"
+                    android:padding="15dp"
                     android:textColor="@color/black"
-                    android:textStyle="italic"
+                    android:textStyle="bold"
                     tools:ignore="SpeakableTextPresentCheck">
                 </com.google.android.material.textfield.TextInputEditText>
 
