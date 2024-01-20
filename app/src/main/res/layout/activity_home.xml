@@ -19,7 +19,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_weight="1"
         android:layout_alignParentBottom="true"
-        android:background="#445FD2"
+        android:background="#8934BD"
         app:menu="@menu/nav_parentitems"
         android:id="@+id/BottomNavigationViewpar">
 </com.google.android.material.bottomnavigation.BottomNavigationView>
