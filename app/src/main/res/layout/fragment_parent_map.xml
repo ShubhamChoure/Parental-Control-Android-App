@@ -3,17 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="BottomNavigation.ParentNavigation.ParentMap">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-     <org.osmdroid.views.MapView
-         android:id="@+id/parentMapView"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent">
-     </org.osmdroid.views.MapView>
-    </LinearLayout>
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mapToolbar"
+            android:layout_width="0dp"
+            android:layout_height="?actionBarSize"
+            android:padding="5dp"
+            app:title="Live Location And Geofence"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            app:titleTextColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="#445FD2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/option_parent_map"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mapToolbar">
+
+            <org.osmdroid.views.MapView
+                android:id="@+id/parentMapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></org.osmdroid.views.MapView>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </FrameLayout>
