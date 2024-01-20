@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import BottomNavigation.ParentNavigation.ParentAccount;
 import BottomNavigation.ParentNavigation.ParentAppLock;
+import BottomNavigation.ParentNavigation.ParentListAdapter.GeofenceService;
 import BottomNavigation.ParentNavigation.ParentMap;
 
 public class HomeActivity extends AppCompatActivity {
@@ -60,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
-
+        startGeofenceForground();
     }
     void switchFragments(Fragment fragment,Boolean start){
         if(start)
@@ -89,4 +92,11 @@ public class HomeActivity extends AppCompatActivity {
         lockEditor = lockSharedPreference.edit();
         iconEditor = iconSharedPreference.edit();
     }
+    void startGeofenceForground(){
+        Intent intent = new Intent(this, GeofenceService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        }
+    }
+
 }

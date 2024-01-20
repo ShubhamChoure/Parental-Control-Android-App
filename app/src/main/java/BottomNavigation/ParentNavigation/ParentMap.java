@@ -322,4 +322,5 @@ public class ParentMap extends Fragment {
         polygon.setPoints(squarePoints);
         mapView.getOverlays().add(polygon);
     }
+
 }
