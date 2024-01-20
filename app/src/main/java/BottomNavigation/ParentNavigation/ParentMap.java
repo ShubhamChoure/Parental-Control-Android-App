@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -35,9 +36,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.Objects;
@@ -70,8 +73,10 @@ public class ParentMap extends Fragment {
     Marker startMarker;
     IMapController mapController;
     FirebaseDatabase firebaseDatabase;
-    GeoPoint startPoint;
+    GeoPoint startPoint,geofencePoint;
     Toolbar mapToolbar;
+    MapEventsOverlay mapEventsOverlay;
+    MapEventsReceiver mapEventsReceiver;
     SearchView  searchView;
     public ParentMap() {
         // Required empty public constructor
@@ -112,6 +117,7 @@ public class ParentMap extends Fragment {
         mapToolbar = view.findViewById(R.id.mapToolbar);
         setMapToolbar();
         initMap();
+        setGeofence();
         getChildName();
 
 
@@ -220,5 +226,30 @@ public class ParentMap extends Fragment {
         setHasOptionsMenu(true);
         setMenuVisibility(true);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(mapToolbar);
+    }
+
+    void setGeofence(){
+        mapEventsReceiver = new MapEventsReceiver() {
+            @Override
+            public boolean singleTapConfirmedHelper(GeoPoint p) {
+                geofencePoint = new GeoPoint(p.getLatitude(),p.getLongitude());
+
+                Marker marker = new Marker(mapView);
+                marker.setPosition(p);
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                marker.setIcon(getResources().getDrawable(R.drawable.baseline_location_on_24));
+                mapView.getOverlays().add(marker);
+                mapView.invalidate();
+                Log.e("6969","Tapped On Map");
+                return true;
+            }
+
+            @Override
+            public boolean longPressHelper(GeoPoint p) {
+                return false;
+            }
+        };
+        mapEventsOverlay = new MapEventsOverlay(mapEventsReceiver);
+        mapView.getOverlays().add(mapEventsOverlay);
     }
 }

@@ -92,6 +92,7 @@ public class ParentAppLock extends Fragment {
     android.widget.SearchView searchView;
 
     FirebaseAppCheck firebaseAppCheck;
+
     String childName;
     byte[] appIconDecoded;
     final long ONE_MEGABYTE = 1024 * 1024;
