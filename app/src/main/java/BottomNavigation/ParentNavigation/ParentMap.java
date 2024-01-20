@@ -132,7 +132,7 @@ public class ParentMap extends Fragment {
     }
     void setMap(Location location){
         startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-        mapController.setZoom(10.0);
+        mapController.setZoom(13.0);
         mapController.setCenter(startPoint);
         startMarker.setPosition(startPoint);
         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
