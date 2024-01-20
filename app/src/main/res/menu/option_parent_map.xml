@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/searchViewMapOption"
-        android:icon="@drawable/baseline_manage_search_24"
-        android:title="Search App"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.widget.SearchView"
-        />
-    <item
-        android:title="Set Geofence"
+        android:title="Set Geofence (Home)"
         android:icon="@drawable/baseline_location_on_24"
-        android:id="@+id/setGeofenceOption"
+        android:id="@+id/setGeofenceHomeOption"
+        app:showAsAction="collapseActionView"
+        android:enabled="true"/>
+    <item
+        android:title="Set Geofence (School)"
+        android:icon="@drawable/baseline_location_on_24"
+        android:id="@+id/setGeofenceSchoolOption"
         app:showAsAction="collapseActionView"
         android:enabled="true"/>
 </menu>

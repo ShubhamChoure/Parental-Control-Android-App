@@ -220,11 +220,17 @@ public class ParentMap extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId()==R.id.setGeofenceOption){
+        if(item.getItemId()==R.id.setGeofenceHomeOption){
             if(geofencePoint==null){
                 Toast.makeText(getContext(), "Please Tap On Map To Select Location ", Toast.LENGTH_SHORT).show();
             }else{
-                setGeofenceSquare();
+                setGeofenceHomeSquare();
+            }
+        }else if (item.getItemId()==R.id.setGeofenceSchoolOption) {
+            if(geofencePoint==null){
+                Toast.makeText(getContext(), "Please Tap On Map To Select Location ", Toast.LENGTH_SHORT).show();
+            }else{
+                setGeofenceSchoolSquare();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -266,19 +272,52 @@ public class ParentMap extends Fragment {
         mapView.getOverlays().add(mapEventsOverlay);
     }
 
-    void setGeofenceSquare(){
+    void setGeofenceHomeSquare(){
         //creating square of 500 meter
         ArrayList<GeoPoint> squarePoints = new ArrayList<>();
         polygon = new Polygon();
         GeoPoint centerCo = new GeoPoint(geofencePoint.getLatitude(),geofencePoint.getLongitude());
         GeoPoint temp = centerCo.destinationPoint(250,360);
         GeoPoint b = temp.destinationPoint(250,90);
+        editor.putFloat("HomeBLat",((float) b.getLatitude())).commit();
+        editor.putFloat("HomeBLong",((float) b.getLongitude())).commit();
         squarePoints.add(b);
         GeoPoint d = b.destinationPoint(500,180);
+        editor.putFloat("HomeDLat",((float) d.getLatitude())).commit();
+        editor.putFloat("HomeDLong",((float) d.getLongitude())).commit();
         squarePoints.add(d);
         GeoPoint c = d.destinationPoint(500,270);
+        editor.putFloat("HomeCLat",((float) c.getLatitude())).commit();
+        editor.putFloat("HomeCLong",((float) c.getLongitude())).commit();
         squarePoints.add(c);
         GeoPoint a = c.destinationPoint(500,360);
+        editor.putFloat("HomeALat",((float) a.getLatitude())).commit();
+        editor.putFloat("HomeALong",((float) a.getLongitude())).commit();
+        squarePoints.add(a);
+        polygon.setPoints(squarePoints);
+        mapView.getOverlays().add(polygon);
+    }
+    void setGeofenceSchoolSquare(){
+        //creating square of 500 meter
+        ArrayList<GeoPoint> squarePoints = new ArrayList<>();
+        polygon = new Polygon();
+        GeoPoint centerCo = new GeoPoint(geofencePoint.getLatitude(),geofencePoint.getLongitude());
+        GeoPoint temp = centerCo.destinationPoint(250,360);
+        GeoPoint b = temp.destinationPoint(250,90);
+        editor.putFloat("SchoolBLat",((float) b.getLatitude())).commit();
+        editor.putFloat("SchoolBLong",((float) b.getLongitude())).commit();
+        squarePoints.add(b);
+        GeoPoint d = b.destinationPoint(500,180);
+        editor.putFloat("SchoolDLat",((float) d.getLatitude())).commit();
+        editor.putFloat("SchoolDLong",((float) d.getLongitude())).commit();
+        squarePoints.add(d);
+        GeoPoint c = d.destinationPoint(500,270);
+        editor.putFloat("SchoolCLat",((float) c.getLatitude())).commit();
+        editor.putFloat("SchoolCLong",((float) c.getLongitude())).commit();
+        squarePoints.add(c);
+        GeoPoint a = c.destinationPoint(500,360);
+        editor.putFloat("SchoolALat",((float) a.getLatitude())).commit();
+        editor.putFloat("SchoolALong",((float) a.getLongitude())).commit();
         squarePoints.add(a);
         polygon.setPoints(squarePoints);
         mapView.getOverlays().add(polygon);
