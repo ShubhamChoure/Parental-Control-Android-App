@@ -356,7 +356,6 @@ public class ParentMap extends Fragment {
     void drawDefinedGeofenceSquareSchool(){
         as = sharedPreferences.getFloat("SchoolALat",0);
         asl = sharedPreferences.getFloat("SchoolALong",0);
-        Log.e("6969","school a lat = "+as);
         if(as!=0){
             bs = sharedPreferences.getFloat("SchoolBLat",0);
             bsl = sharedPreferences.getFloat("SchoolBLong",0);
