@@ -157,9 +157,11 @@ public class SetPatternActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     lottieDialogBtn.setVisibility(View.VISIBLE);
+                                    Log.e("setPattern","pattern uplaod Successful");
                                 }else{
                                     lottieDialogBtn.setVisibility(View.VISIBLE);
                                     Toast.makeText(SetPatternActivity.this, "Pattern Upload Failed", Toast.LENGTH_SHORT).show();
+                                    Log.e("setPattern","pattern uplaod unSuccessful");
                                 }
                             }
                         });

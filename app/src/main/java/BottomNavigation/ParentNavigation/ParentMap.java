@@ -51,6 +51,7 @@ import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import BottomNavigation.ParentNavigation.ParentListAdapter.GeofenceService;
 import Locks.SetPatternActivity;
 
 /**
@@ -158,6 +159,13 @@ public class ParentMap extends Fragment {
         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         mapView.getOverlays().add(startMarker);
     }
+    void setMapNoZoom(Location location){
+        startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+        mapController.setCenter(startPoint);
+        startMarker.setPosition(startPoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        mapView.getOverlays().add(startMarker);
+    }
 
     void getChildName() {
         db.collection("Relation").whereEqualTo("Mail", mAuth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -210,7 +218,7 @@ public class ParentMap extends Fragment {
                 longitude = Double.parseDouble(lonStr);
                 location.setLatitude(latitude);
                 location.setLongitude(longitude);
-                setMap(location);
+                setMapNoZoom(location);
             }
 
             @Override
@@ -300,6 +308,9 @@ public class ParentMap extends Fragment {
         squarePoints.add(a);
         polygon.setPoints(squarePoints);
         mapView.getOverlays().add(polygon);
+
+        //set Live Shared Prefrence for forground service
+        GeofenceService.setGeofenceCoordinate();
     }
     void setGeofenceSchoolSquare(){
         //creating square of 500 meter
@@ -325,6 +336,9 @@ public class ParentMap extends Fragment {
         squarePoints.add(a);
         polygon.setPoints(squarePoints);
         mapView.getOverlays().add(polygon);
+
+        //set Live Shared Prefrence for forground service
+        GeofenceService.setGeofenceCoordinate();
     }
 
     void drawDefinedGeofenceSquareHome(){
@@ -356,7 +370,6 @@ public class ParentMap extends Fragment {
     void drawDefinedGeofenceSquareSchool(){
         as = sharedPreferences.getFloat("SchoolALat",0);
         asl = sharedPreferences.getFloat("SchoolALong",0);
-        Log.e("6969","school a lat = "+as);
         if(as!=0){
             bs = sharedPreferences.getFloat("SchoolBLat",0);
             bsl = sharedPreferences.getFloat("SchoolBLong",0);
