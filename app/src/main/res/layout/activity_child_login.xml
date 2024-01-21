@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="Login.Childe.ChildLogin">
+    tools:context="Login.Childe.ChildLogin"
+    android:background="#F3F3F3">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,37 +15,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:ignore="ExtraText"><![CDATA[
-
-            com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp">
-
-                ]]>
+            tools:ignore="ExtraText">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="390sp"
+                android:layout_height="350dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
-                android:src="@drawable/chlid_loginpages">
+                android:src="@drawable/childtv">
 
             </ImageView>
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/LoginMailETxt"
+                    app:hintTextColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="45dp"
+                    android:layout_marginRight="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
-                    android:drawableLeft="@drawable/baseline_mail_24_blackieee"
-                    android:hint="  Enter E-mail"
+                    android:drawableLeft="@drawable/baseline_contact_mailchild"
+                    android:hint="  Enter Email ID"
                     android:padding="15dp"
-                    android:textStyle="italic"
+                    android:textStyle="bold"
                     android:textColor="@color/black"
                     tools:ignore="InefficientWeight">
                 </com.google.android.material.textfield.TextInputEditText>
@@ -53,23 +48,24 @@
                 android:id="@+id/PassTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintTextColor="@color/black"
                 app:passwordToggleEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/LoginPassETxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="25dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/editbutton"
-                    android:drawableStart="@drawable/baseline_lock_24"
+                    android:drawableStart="@drawable/baseline_lockchild"
                     android:hint="  Enter Password"
                     android:inputType="textPassword"
                     android:padding="15dp"
                     android:textColor="@color/black"
-                    android:textStyle="italic"
+                    android:textStyle="bold"
                     tools:ignore="SpeakableTextPresentCheck">
                 </com.google.android.material.textfield.TextInputEditText>
 
@@ -80,7 +76,7 @@
                 android:id="@+id/ForgetTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="right"
                 android:paddingRight="15dp"
@@ -96,9 +92,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/button_desing"
+                android:background="@drawable/childbutton"
                 android:padding="15dp"
                 android:text="Login"
                 android:textColor="@color/white"
