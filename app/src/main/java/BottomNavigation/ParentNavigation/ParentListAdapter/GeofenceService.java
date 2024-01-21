@@ -15,7 +15,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
+import com.example.jspm.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +33,7 @@ public class GeofenceService extends Service {
 
     NotificationManager notificationManager;
     NotificationChannel notificationChannel;
-    Notification.Builder notificationBuilder;
+    NotificationCompat.Builder notificationBuilder;
     FirebaseDatabase firebaseDatabase;
     Boolean isInSchool,isInHome;
     FirebaseFirestore db;
@@ -39,13 +41,16 @@ public class GeofenceService extends Service {
     static SharedPreferences sharedPreferences;
     Location currentLocation;
     public static final String GeoFence_Shared_Pref_Id ="GEOFENCE_DATA";
-
+    public static final String Home_Notifiaction_Id ="HOME_NOTIFICATION";
+    public static final int Geo_Notifiaction_Id_INT = 801;
+    public static final String School_Notifiaction_Id ="SCHOOL_NOTIFICATION";
     String childTemp,childName;
     double latitude,longitude;
 
     static double a,al,b,bl,c,cl,d,dl,as,asl,bs,bsl,cs,csl,ds,dsl;
     public static final String GEOFENCE_NOTIFICATION_ID = "GEOFENCE_NOTIFICATION";
     public static final int GEOFENCE_NOTIFICATION_ID_INT = 5002;
+    public static final String FOREGROUND_SERVICE_ID = "FOREGROUND_SERVICE_ID";
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -65,9 +70,10 @@ public class GeofenceService extends Service {
 
     void init(){
         notificationManager = getSystemService(NotificationManager.class);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel(GEOFENCE_NOTIFICATION_ID,"Geofence Service Is Running",NotificationManager.IMPORTANCE_HIGH);
-            notificationBuilder = new Notification.Builder(this,GEOFENCE_NOTIFICATION_ID);
+            notificationBuilder = new NotificationCompat.Builder(this,FOREGROUND_SERVICE_ID);
         }
         firebaseDatabase = FirebaseDatabase.getInstance("https://parent-control-eb1f8-default-rtdb.asia-southeast1.firebasedatabase.app/");
         db = FirebaseFirestore.getInstance();
@@ -81,7 +87,7 @@ public class GeofenceService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(notificationChannel);
         }
-        notificationBuilder.setContentText("Geofence Service").setContentTitle("Parent Control App Is Running");
+        notificationBuilder.setContentText("Geofence Service").setContentTitle("Parent Control App Is Running").setSmallIcon(R.drawable.parent_control_app_icon).setChannelId(GEOFENCE_NOTIFICATION_ID);
         startForeground(GEOFENCE_NOTIFICATION_ID_INT,notificationBuilder.build());
     }
     void checkGeofence(){
@@ -103,11 +109,13 @@ public class GeofenceService extends Service {
                           if(!isInHome) {
                               Log.e("loc69", "Child is Entered home");
                               isInHome = true;
+                              showHomeNotification();
                           }
                       }else{
                           if(isInHome){
                               Log.e("loc69", "Child is Exited home");
                               isInHome =false;
+                              showHomeNotification();
                           }
                       }
                   }
@@ -116,11 +124,13 @@ public class GeofenceService extends Service {
                           if(!isInSchool) {
                               Log.e("loc69", "Child is Entered school");
                               isInSchool = true;
+                              showSchoolNotification();
                           }
                       }else{
                           if(isInSchool){
                               Log.e("loc69", "Child is Exited school");
                               isInSchool = false;
+                              showSchoolNotification();
                           }
                       }
                   }
@@ -170,6 +180,40 @@ public class GeofenceService extends Service {
             csl = sharedPreferences.getFloat("SchoolCLong",0);
             ds = sharedPreferences.getFloat("SchoolDLat",0);
             dsl = sharedPreferences.getFloat("SchoolDLong",0);
+        }
+    }
+    void showHomeNotification(){
+        if(isInHome) {
+            Notification homeNotification = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                homeNotification = new NotificationCompat.Builder(this, Home_Notifiaction_Id)
+                        .setContentTitle("Reached Home").setContentText("Child Entered Home Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+            }
+            notificationManager.notify(Geo_Notifiaction_Id_INT,homeNotification);
+        }else{
+            Notification homeNotification = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                homeNotification = new NotificationCompat.Builder(this, Home_Notifiaction_Id)
+                        .setContentTitle("Left Home").setContentText("Child Exited Home Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+            }
+            notificationManager.notify(Geo_Notifiaction_Id_INT,homeNotification);
+        }
+    }
+    void showSchoolNotification(){
+        if(isInSchool) {
+            Notification schoolNotification = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                schoolNotification = new NotificationCompat.Builder(this, School_Notifiaction_Id)
+                        .setContentTitle("Reached School").setContentText("Child Entered School Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+            }
+            notificationManager.notify(Geo_Notifiaction_Id_INT,schoolNotification);
+        }else{
+            Notification schoolNotification = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                schoolNotification = new NotificationCompat.Builder(this, School_Notifiaction_Id)
+                        .setContentTitle("Left School").setContentText("Child Exited School Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+            }
+            notificationManager.notify(Geo_Notifiaction_Id_INT,schoolNotification);
         }
     }
 }
