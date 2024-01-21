@@ -280,7 +280,7 @@ public class ParentAppLock extends Fragment {
                         hashMap.put("LockStatus",HomeActivity.lockSharedPreference.getBoolean(appName,false));
                         Log.e("tag",appName + " is app name");
                         if(childName!=null && appName!=null){
-                        db.collection(childName).document(appName).update(hashMap);
+                        //db.collection(childName).document(appName).update(hashMap);
                         }else{
                             Log.e("tag","child name is null");
                         }

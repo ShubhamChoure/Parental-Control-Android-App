@@ -12,7 +12,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,17 +33,17 @@ public class GeofenceService extends Service {
     NotificationChannel notificationChannel;
     Notification.Builder notificationBuilder;
     FirebaseDatabase firebaseDatabase;
-    static Boolean isInSchool=false,isInHome = false;
+    Boolean isInSchool,isInHome;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
-    SharedPreferences sharedPreferences;
+    static SharedPreferences sharedPreferences;
     Location currentLocation;
     public static final String GeoFence_Shared_Pref_Id ="GEOFENCE_DATA";
 
     String childTemp,childName;
     double latitude,longitude;
 
-    double a,al,b,bl,c,cl,d,dl,as,asl,bs,bsl,cs,csl,ds,dsl;
+    static double a,al,b,bl,c,cl,d,dl,as,asl,bs,bsl,cs,csl,ds,dsl;
     public static final String GEOFENCE_NOTIFICATION_ID = "GEOFENCE_NOTIFICATION";
     public static final int GEOFENCE_NOTIFICATION_ID_INT = 5002;
     @Override
@@ -75,6 +74,8 @@ public class GeofenceService extends Service {
         mAuth = FirebaseAuth.getInstance();
         sharedPreferences = this.getSharedPreferences(GeoFence_Shared_Pref_Id, Context.MODE_PRIVATE);
         currentLocation = new Location("");
+        isInHome = false;
+        isInSchool = false;
     }
     void showNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -99,12 +100,28 @@ public class GeofenceService extends Service {
                   //check for Home
                   if(a!=0){
                       if(currentLocation.getLatitude()<a && currentLocation.getLatitude()>c && currentLocation.getLongitude() > al && currentLocation.getLongitude() < bl){
-                          Log.e("6969","Child is inside home");
+                          if(!isInHome) {
+                              Log.e("loc69", "Child is Entered home");
+                              isInHome = true;
+                          }
+                      }else{
+                          if(isInHome){
+                              Log.e("loc69", "Child is Exited home");
+                              isInHome =false;
+                          }
                       }
                   }
                   if(as!=0){
                       if(currentLocation.getLatitude()<as && currentLocation.getLatitude()>cs && currentLocation.getLongitude() > asl && currentLocation.getLongitude() < bsl){
-                          Log.e("6969","Child is inside school");
+                          if(!isInSchool) {
+                              Log.e("loc69", "Child is Entered school");
+                              isInSchool = true;
+                          }
+                      }else{
+                          if(isInSchool){
+                              Log.e("loc69", "Child is Exited school");
+                              isInSchool = false;
+                          }
                       }
                   }
               }
@@ -133,7 +150,7 @@ public class GeofenceService extends Service {
             }
         });
     }
-    public void setGeofenceCoordinate(){
+    public static void setGeofenceCoordinate(){
         a = sharedPreferences.getFloat("HomeALat",0);
         al = sharedPreferences.getFloat("HomeALong",0);
         if(a!=0){
