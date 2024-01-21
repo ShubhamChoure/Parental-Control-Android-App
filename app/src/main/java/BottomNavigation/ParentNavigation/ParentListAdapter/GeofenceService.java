@@ -34,6 +34,7 @@ public class GeofenceService extends Service {
     NotificationChannel notificationChannel;
     Notification.Builder notificationBuilder;
     FirebaseDatabase firebaseDatabase;
+    static Boolean isInSchool=false,isInHome = false;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     SharedPreferences sharedPreferences;
@@ -101,6 +102,11 @@ public class GeofenceService extends Service {
                           Log.e("6969","Child is inside home");
                       }
                   }
+                  if(as!=0){
+                      if(currentLocation.getLatitude()<as && currentLocation.getLatitude()>cs && currentLocation.getLongitude() > asl && currentLocation.getLongitude() < bsl){
+                          Log.e("6969","Child is inside school");
+                      }
+                  }
               }
 
               @Override
@@ -127,7 +133,7 @@ public class GeofenceService extends Service {
             }
         });
     }
-    void setGeofenceCoordinate(){
+    public void setGeofenceCoordinate(){
         a = sharedPreferences.getFloat("HomeALat",0);
         al = sharedPreferences.getFloat("HomeALong",0);
         if(a!=0){
