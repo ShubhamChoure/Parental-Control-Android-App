@@ -3,6 +3,7 @@ package BottomNavigation.ParentNavigation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.IDNA;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -45,6 +46,7 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.Polygon;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -84,6 +86,7 @@ public class ParentMap extends Fragment {
     MapEventsReceiver mapEventsReceiver;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    double a,al,b,bl,c,cl,d,dl,as,asl,bs,bsl,cs,csl,ds,dsl;
     public static final String GeoFence_Shared_Pref_Id ="GEOFENCE_DATA";
     SearchView  searchView;
     public ParentMap() {
@@ -127,7 +130,8 @@ public class ParentMap extends Fragment {
         initMap();
         setGeofenceMarker();
         getChildName();
-
+        drawDefinedGeofenceSquareHome();
+        drawDefinedGeofenceSquareSchool();
 
         // Inflate the layout for this fragment
         return view;
@@ -220,11 +224,17 @@ public class ParentMap extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId()==R.id.setGeofenceOption){
+        if(item.getItemId()==R.id.setGeofenceHomeOption){
             if(geofencePoint==null){
                 Toast.makeText(getContext(), "Please Tap On Map To Select Location ", Toast.LENGTH_SHORT).show();
             }else{
-                setGeofenceSquare();
+                setGeofenceHomeSquare();
+            }
+        }else if (item.getItemId()==R.id.setGeofenceSchoolOption) {
+            if(geofencePoint==null){
+                Toast.makeText(getContext(), "Please Tap On Map To Select Location ", Toast.LENGTH_SHORT).show();
+            }else{
+                setGeofenceSchoolSquare();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -266,21 +276,109 @@ public class ParentMap extends Fragment {
         mapView.getOverlays().add(mapEventsOverlay);
     }
 
-    void setGeofenceSquare(){
+    void setGeofenceHomeSquare(){
         //creating square of 500 meter
         ArrayList<GeoPoint> squarePoints = new ArrayList<>();
         polygon = new Polygon();
         GeoPoint centerCo = new GeoPoint(geofencePoint.getLatitude(),geofencePoint.getLongitude());
         GeoPoint temp = centerCo.destinationPoint(250,360);
         GeoPoint b = temp.destinationPoint(250,90);
+        editor.putFloat("HomeBLat",((float) b.getLatitude())).commit();
+        editor.putFloat("HomeBLong",((float) b.getLongitude())).commit();
         squarePoints.add(b);
         GeoPoint d = b.destinationPoint(500,180);
+        editor.putFloat("HomeDLat",((float) d.getLatitude())).commit();
+        editor.putFloat("HomeDLong",((float) d.getLongitude())).commit();
         squarePoints.add(d);
         GeoPoint c = d.destinationPoint(500,270);
+        editor.putFloat("HomeCLat",((float) c.getLatitude())).commit();
+        editor.putFloat("HomeCLong",((float) c.getLongitude())).commit();
         squarePoints.add(c);
         GeoPoint a = c.destinationPoint(500,360);
+        editor.putFloat("HomeALat",((float) a.getLatitude())).commit();
+        editor.putFloat("HomeALong",((float) a.getLongitude())).commit();
         squarePoints.add(a);
         polygon.setPoints(squarePoints);
         mapView.getOverlays().add(polygon);
     }
+    void setGeofenceSchoolSquare(){
+        //creating square of 500 meter
+        ArrayList<GeoPoint> squarePoints = new ArrayList<>();
+        polygon = new Polygon();
+        GeoPoint centerCo = new GeoPoint(geofencePoint.getLatitude(),geofencePoint.getLongitude());
+        GeoPoint temp = centerCo.destinationPoint(250,360);
+        GeoPoint b = temp.destinationPoint(250,90);
+        editor.putFloat("SchoolBLat",((float) b.getLatitude())).commit();
+        editor.putFloat("SchoolBLong",((float) b.getLongitude())).commit();
+        squarePoints.add(b);
+        GeoPoint d = b.destinationPoint(500,180);
+        editor.putFloat("SchoolDLat",((float) d.getLatitude())).commit();
+        editor.putFloat("SchoolDLong",((float) d.getLongitude())).commit();
+        squarePoints.add(d);
+        GeoPoint c = d.destinationPoint(500,270);
+        editor.putFloat("SchoolCLat",((float) c.getLatitude())).commit();
+        editor.putFloat("SchoolCLong",((float) c.getLongitude())).commit();
+        squarePoints.add(c);
+        GeoPoint a = c.destinationPoint(500,360);
+        editor.putFloat("SchoolALat",((float) a.getLatitude())).commit();
+        editor.putFloat("SchoolALong",((float) a.getLongitude())).commit();
+        squarePoints.add(a);
+        polygon.setPoints(squarePoints);
+        mapView.getOverlays().add(polygon);
+    }
+
+    void drawDefinedGeofenceSquareHome(){
+        a = sharedPreferences.getFloat("HomeALat",0);
+        al = sharedPreferences.getFloat("HomeALong",0);
+        if(a!=0){
+            b = sharedPreferences.getFloat("HomeBLat",0);
+            bl = sharedPreferences.getFloat("HomeBLong",0);
+            c = sharedPreferences.getFloat("HomeCLat",0);
+            cl = sharedPreferences.getFloat("HomeCLong",0);
+            d = sharedPreferences.getFloat("HomeDLat",0);
+            dl = sharedPreferences.getFloat("HomeDLong",0);
+            GeoPoint hPointA = new GeoPoint(a,al);
+            GeoPoint hPointB = new GeoPoint(b,bl);
+            GeoPoint hPointC = new GeoPoint(c,cl);
+            GeoPoint hPointD = new GeoPoint(d,dl);
+
+            ArrayList<GeoPoint> homeRectPoints = new ArrayList<>();
+            homeRectPoints.add(hPointB);
+            homeRectPoints.add(hPointD);
+            homeRectPoints.add(hPointC);
+            homeRectPoints.add(hPointA);
+            Polygon homeRect = new Polygon();
+            homeRect.setPoints(homeRectPoints);
+            mapView.getOverlays().add(homeRect);
+        }
+
+    }
+    void drawDefinedGeofenceSquareSchool(){
+        as = sharedPreferences.getFloat("SchoolALat",0);
+        asl = sharedPreferences.getFloat("SchoolALong",0);
+        Log.e("6969","school a lat = "+as);
+        if(as!=0){
+            bs = sharedPreferences.getFloat("SchoolBLat",0);
+            bsl = sharedPreferences.getFloat("SchoolBLong",0);
+            cs = sharedPreferences.getFloat("SchoolCLat",0);
+            csl = sharedPreferences.getFloat("SchoolCLong",0);
+            ds = sharedPreferences.getFloat("SchoolDLat",0);
+            dsl = sharedPreferences.getFloat("SchoolDLong",0);
+
+            GeoPoint sPointA = new GeoPoint(as,asl);
+            GeoPoint sPointB = new GeoPoint(bs,bsl);
+            GeoPoint sPointC = new GeoPoint(cs,csl);
+            GeoPoint sPointD = new GeoPoint(ds,dsl);
+
+            ArrayList<GeoPoint> schoolRectPoints = new ArrayList<>();
+            schoolRectPoints.add(sPointB);
+            schoolRectPoints.add(sPointD);
+            schoolRectPoints.add(sPointC);
+            schoolRectPoints.add(sPointA);
+            Polygon schoolRect = new Polygon();
+            schoolRect.setPoints(schoolRectPoints);
+            mapView.getOverlays().add(schoolRect);
+        }
+    }
+
 }

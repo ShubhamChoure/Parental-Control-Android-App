@@ -74,6 +74,8 @@
         </activity>
         <service android:name="BottomNavigation.ChildeNavigation.LocationUploadService"
             android:foregroundServiceType="location"/>
+        <service android:name="BottomNavigation.ParentNavigation.ParentListAdapter.GeofenceService"
+            android:foregroundServiceType="dataSync"/>
     </application>
 
 </manifest>
