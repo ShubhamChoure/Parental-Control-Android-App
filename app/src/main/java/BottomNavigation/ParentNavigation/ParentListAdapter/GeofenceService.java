@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.media.AudioAttributes;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -82,6 +84,7 @@ public class GeofenceService extends Service {
         currentLocation = new Location("");
         isInHome = false;
         isInSchool = false;
+
     }
     void showNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
