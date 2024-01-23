@@ -34,7 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class GeofenceService extends Service {
 
     NotificationManager notificationManager;
-    NotificationChannel notificationChannel;
+    NotificationChannel notificationChannel,enteredHomeNotificationChannel;
     NotificationCompat.Builder notificationBuilder;
     FirebaseDatabase firebaseDatabase;
     Boolean isInSchool,isInHome;
@@ -50,6 +50,11 @@ public class GeofenceService extends Service {
     double latitude,longitude;
 
     static double a,al,b,bl,c,cl,d,dl,as,asl,bs,bsl,cs,csl,ds,dsl;
+
+    public static final String ENTRED_HOME_ID = "ENTRED_HOME";
+    public static final String EXITED_HOME_ID = "EXITED_HOME";
+    public static final String ENTRED_SCHOOL_ID = "ENTRED_SCHOOL";
+    public static final String EXITED_SCHOOL_ID = "EXITED_SCHOOL";
     public static final String GEOFENCE_NOTIFICATION_ID = "GEOFENCE_NOTIFICATION";
     public static final int GEOFENCE_NOTIFICATION_ID_INT = 5002;
     public static final String FOREGROUND_SERVICE_ID = "FOREGROUND_SERVICE_ID";
@@ -76,6 +81,11 @@ public class GeofenceService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel(GEOFENCE_NOTIFICATION_ID,"Geofence Service Is Running",NotificationManager.IMPORTANCE_HIGH);
             notificationBuilder = new NotificationCompat.Builder(this,FOREGROUND_SERVICE_ID);
+
+            setHomeEntredAudio();
+            setHomeExitedAudio();
+            setSchoolEnteredAudio();
+            setSchoolExitedAudio();
         }
         firebaseDatabase = FirebaseDatabase.getInstance("https://parent-control-eb1f8-default-rtdb.asia-southeast1.firebasedatabase.app/");
         db = FirebaseFirestore.getInstance();
@@ -86,6 +96,73 @@ public class GeofenceService extends Service {
         isInSchool = false;
 
     }
+
+    private void setHomeEntredAudio() {
+        //setting sound to child entred home notification
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            enteredHomeNotificationChannel = new NotificationChannel(ENTRED_HOME_ID,"Child Entred Home",NotificationManager.IMPORTANCE_DEFAULT);
+            Uri homeEntredUri = Uri.parse("android.resource://"
+                    + this.getPackageName() + "/" + R.raw.entered_home);
+
+            enteredHomeNotificationChannel.setSound(homeEntredUri,audioAttributes);
+            notificationManager.createNotificationChannel(enteredHomeNotificationChannel);
+        }
+
+    }
+    private void setHomeExitedAudio() {
+        //setting sound to child exited home notification
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+           NotificationChannel  exitedHomeNotificationChannel = new NotificationChannel(EXITED_HOME_ID,"Child Exited Home",NotificationManager.IMPORTANCE_DEFAULT);
+            Uri homeEntredUri = Uri.parse("android.resource://"
+                    + this.getPackageName() + "/" + R.raw.exited_home);
+
+            exitedHomeNotificationChannel.setSound(homeEntredUri,audioAttributes);
+            notificationManager.createNotificationChannel(exitedHomeNotificationChannel);
+        }
+
+    }
+    private void setSchoolEnteredAudio() {
+        //setting sound to child entred School notification
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel enteredSchoolNotificationChannel = new NotificationChannel(ENTRED_SCHOOL_ID,"Child Exited Home",NotificationManager.IMPORTANCE_DEFAULT);
+            Uri homeEntredUri = Uri.parse("android.resource://"
+                    + this.getPackageName() + "/" + R.raw.entered_school);
+
+            enteredSchoolNotificationChannel.setSound(homeEntredUri,audioAttributes);
+            notificationManager.createNotificationChannel(enteredSchoolNotificationChannel);
+        }
+
+    }
+
+    private void setSchoolExitedAudio() {
+        //setting sound to child entred School notification
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel exitedSchoolNotificationChannel = new NotificationChannel(ENTRED_SCHOOL_ID,"Child Exited Home",NotificationManager.IMPORTANCE_DEFAULT);
+            Uri homeEntredUri = Uri.parse("android.resource://"
+                    + this.getPackageName() + "/" + R.raw.entered_school);
+
+            exitedSchoolNotificationChannel.setSound(homeEntredUri,audioAttributes);
+            notificationManager.createNotificationChannel(exitedSchoolNotificationChannel);
+        }
+
+    }
+
     void showNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(notificationChannel);
@@ -189,15 +266,15 @@ public class GeofenceService extends Service {
         if(isInHome) {
             Notification homeNotification = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                homeNotification = new NotificationCompat.Builder(this, Home_Notifiaction_Id)
-                        .setContentTitle("Reached Home").setContentText("Child Entered Home Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+                homeNotification = new NotificationCompat.Builder(this, ENTRED_HOME_ID)
+                        .setContentTitle("Reached Home").setContentText("Child Entered Home Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(ENTRED_HOME_ID).build();
             }
             notificationManager.notify(Geo_Notifiaction_Id_INT,homeNotification);
         }else{
             Notification homeNotification = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                homeNotification = new NotificationCompat.Builder(this, Home_Notifiaction_Id)
-                        .setContentTitle("Left Home").setContentText("Child Exited Home Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+                homeNotification = new NotificationCompat.Builder(this, EXITED_HOME_ID)
+                        .setContentTitle("Left Home").setContentText("Child Exited Home Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(EXITED_HOME_ID).build();
             }
             notificationManager.notify(Geo_Notifiaction_Id_INT,homeNotification);
         }
@@ -206,15 +283,15 @@ public class GeofenceService extends Service {
         if(isInSchool) {
             Notification schoolNotification = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                schoolNotification = new NotificationCompat.Builder(this, School_Notifiaction_Id)
-                        .setContentTitle("Reached School").setContentText("Child Entered School Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+                schoolNotification = new NotificationCompat.Builder(this, ENTRED_SCHOOL_ID)
+                        .setContentTitle("Reached School").setContentText("Child Entered School Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(ENTRED_SCHOOL_ID).build();
             }
             notificationManager.notify(Geo_Notifiaction_Id_INT,schoolNotification);
         }else{
             Notification schoolNotification = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                schoolNotification = new NotificationCompat.Builder(this, School_Notifiaction_Id)
-                        .setContentTitle("Left School").setContentText("Child Exited School Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(GEOFENCE_NOTIFICATION_ID).build();
+                schoolNotification = new NotificationCompat.Builder(this, EXITED_SCHOOL_ID)
+                        .setContentTitle("Left School").setContentText("Child Exited School Area").setSmallIcon(R.drawable.baseline_location_on_24).setChannelId(EXITED_SCHOOL_ID).build();
             }
             notificationManager.notify(Geo_Notifiaction_Id_INT,schoolNotification);
         }
