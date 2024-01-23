@@ -10,11 +10,12 @@
 
     <ImageView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        android:layout_height="wrap_content"
         android:src="@drawable/singupupper">
     </ImageView>
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
