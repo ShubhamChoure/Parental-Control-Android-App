@@ -155,7 +155,7 @@ public class GeofenceService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel exitedSchoolNotificationChannel = new NotificationChannel(ENTRED_SCHOOL_ID,"Child Exited Home",NotificationManager.IMPORTANCE_DEFAULT);
             Uri homeEntredUri = Uri.parse("android.resource://"
-                    + this.getPackageName() + "/" + R.raw.entered_school);
+                    + this.getPackageName() + "/" + R.raw.exited_school);
 
             exitedSchoolNotificationChannel.setSound(homeEntredUri,audioAttributes);
             notificationManager.createNotificationChannel(exitedSchoolNotificationChannel);

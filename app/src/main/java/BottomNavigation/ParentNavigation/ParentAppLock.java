@@ -192,23 +192,11 @@ public class ParentAppLock extends Fragment {
 
                                             String byteArrString = HomeActivity.iconSharedPreference.getString(obj.getAppName(),"NOTSAVED");
                                             if(byteArrString.equals("NOTSAVED")){
-                                                //load image
-                                                StorageReference imagePath = storageReference.child("Icon/" + obj.getAppName());
-
-                                                Boolean available =  imagePath.getDownloadUrl().isSuccessful();
-                                                if(available) {
-                                                    imagePath.getBytes(ONE_MEGABYTE).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.e("tag", e.toString());
-                                                        }
-                                                    }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<byte[]> task) {
-                                                            obj.setAppIcon(byteArrayToDrawable(task.getResult(), obj.getAppName()));
-                                                            HomeActivity.iconEditor.putString(obj.getAppName(), Base64.encodeToString(task.getResult(), android.util.Base64.DEFAULT)).commit();
-                                                        }
-                                                    });
+                                                String encodedBase64 = document.getString("Icon");
+                                                if(encodedBase64!=null) {
+                                                    byte[] decodedImgBase64 = Base64.decode(encodedBase64, Base64.DEFAULT);
+                                                    HomeActivity.iconEditor.putString(obj.getAppName(), encodedBase64);
+                                                    obj.setAppIcon(byteArrayToDrawable(decodedImgBase64, obj.getAppName()));
                                                 }
                                             }else{
                                                appIconDecoded = Base64.decode(byteArrString,Base64.DEFAULT);
