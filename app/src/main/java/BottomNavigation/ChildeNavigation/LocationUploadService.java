@@ -1,5 +1,7 @@
 package BottomNavigation.ChildeNavigation;
 
+import static android.content.Intent.getIntent;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
@@ -74,10 +76,15 @@ public class LocationUploadService extends Service {
     DatabaseReference databaseReference;
     FusedLocationProviderClient fusedLocationProviderClient;
 
+    static String childNameTemp;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        init(intent);
+        if(intent.getExtras()!=null) {
+            childNameTemp = intent.getStringExtra("user");
+        }
+        init();
         showNotification();
         uploadLocation();
 
@@ -102,7 +109,7 @@ public class LocationUploadService extends Service {
         return null;
     }
 
-    void init(Intent intent) {
+    void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Live Location Update", NotificationManager.IMPORTANCE_HIGH);
             notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
@@ -111,7 +118,6 @@ public class LocationUploadService extends Service {
         childlockSharedPreference = getSharedPreferences(PREF_LOCK, Context.MODE_PRIVATE);
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://parent-control-eb1f8-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        String childNameTemp = intent.getStringExtra("user");
         int indexOfDot = childNameTemp.indexOf('.');
         databaseReference = firebaseDatabase.getReference(childNameTemp.substring(0, indexOfDot));
     }
@@ -142,19 +148,20 @@ public class LocationUploadService extends Service {
                     String topPackageName = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
                     // Now topPackageName is the package name of the app that was launched most recently
                     if (!tempCurrentApp.equals(topPackageName)) {
-                        tempCurrentApp = topPackageName;
-
+                        if(!(topPackageName.equals("com.example.jspm"))) {
+                            tempCurrentApp = topPackageName;
+                        }
                         packageManager = context.getPackageManager();
                         try {
                             applicationInfo = packageManager.getApplicationInfo(topPackageName, PackageManager.GET_META_DATA);
-                            appName = (String) applicationInfo.loadLabel(packageManager);
-                            Log.e("tagAppOpen", appName + " is launched");
-                            if (childlockSharedPreference.getBoolean(appName, false)) {
-                                Log.e("tagAppOpen", appName + " is locked");
-                                Intent intent = new Intent(context, PopUpPatternLock.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
-                            }
+                                appName = (String) applicationInfo.loadLabel(packageManager);
+                                Log.e("tagAppOpen", appName + " is launched");
+                                if (childlockSharedPreference.getBoolean(appName, false)) {
+                                    Log.e("tagAppOpen", appName + " is locked");
+                                    Intent intent = new Intent(context, PopUpPatternLock.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+                                }
                         } catch (Exception e) {
                             Log.e("tagAppOpen", e.toString());
                         }

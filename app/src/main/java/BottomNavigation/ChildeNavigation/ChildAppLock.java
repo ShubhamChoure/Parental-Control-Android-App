@@ -227,6 +227,9 @@ public class ChildAppLock extends Fragment {
             hashMap = new HashMap<String, Object>();
             hashMap.put("AppName", i.getAppName());
             hashMap.put("PackageName", i.getPackageName());
+            byte[] data = bitmapTobyteArray(drawableToBitmap(i.getAppIcon()));
+            String imgBase64String = Base64.encodeToString(data,Base64.DEFAULT);
+            hashMap.put("Icon",imgBase64String);
 
             CollectionReference collectionReference = db.collection(ChildHomeActivity.mAuth.getCurrentUser().getEmail());
             String id = i.getAppName().trim();
@@ -268,22 +271,6 @@ public class ChildAppLock extends Fragment {
             } else {
                 Log.e("tagSlash", id + " is app with slash");
             }
-            storageReference.child("Icon/" + i.getAppName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-
-                    Log.e("tag", "Icon Already Uploaded");
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    StorageReference iconStrRef = storageReference.child("Icon").child(i.getAppName());
-                    byte[] data = bitmapTobyteArray(drawableToBitmap(i.getAppIcon()));
-                    uploadAppIcon(data, iconStrRef);
-
-                }
-            });
         }
         downloadLockstatus();
     }

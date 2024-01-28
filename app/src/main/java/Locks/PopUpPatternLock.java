@@ -46,7 +46,7 @@ public class PopUpPatternLock extends AppCompatActivity {
                 String patternStr =  childlockSharedPreference.getString("Pattern Lock Key","0");
                 String[] arr = patternStr.split(",");
                 Log.e("tagPatternArray",patternStr);
-                Log.e("tagPatternArray",arr[0]+arr[1]+arr[2]+arr[3]+arr[4]+arr[5]+arr[6]+arr[7]+arr[8]);
+                //Log.e("tagPatternArray",arr[0]+arr[1]+arr[2]+arr[3]+arr[4]+arr[5]+arr[6]+arr[7]+arr[8]);
 
               ArrayList<Integer> patternArray =  new ArrayList<>();
                 for(String i:arr){
