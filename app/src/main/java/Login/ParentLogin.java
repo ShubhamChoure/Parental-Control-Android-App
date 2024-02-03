@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import HomeActivity.ParentHomeActivity.HomeActivity;
+import HomeActivity.ParentHomeActivity.ParentDetailActivity;
 
 public class ParentLogin extends AppCompatActivity {
     EditText mailEDtxt,passEDtxt;
@@ -34,6 +36,7 @@ public class ParentLogin extends AppCompatActivity {
     FirebaseUser currentUser;
     String mailStr,passStr;
     LottieAnimationView btnLoadAni;
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +79,18 @@ public class ParentLogin extends AppCompatActivity {
                              {
                              if(currentUser.isEmailVerified())
                              {
-                                 Log.e("tag","inside verified mail");
-                                 Intent homeIntent = new Intent(ParentLogin.this, HomeActivity.class);
-                                 startActivity(homeIntent);
-                                 finish();
+                                 boolean isDetailSubmited = preferences.getBoolean("isDetailsSubmitted?",false);
+                                 if(!isDetailSubmited){
+                                     Intent detailIntent = new Intent(ParentLogin.this, ParentDetailActivity.class);
+                                     startActivity(detailIntent);
+                                     finish();
+                                 }else{
+                                     Log.e("tag","inside verified mail");
+                                     Intent homeIntent = new Intent(ParentLogin.this, HomeActivity.class);
+                                     startActivity(homeIntent);
+                                     finish();
+                                 }
+
                              }else {
                                  Log.e("tag","mail is unverified");
                                  continueBtn.setVisibility(continueBtn.VISIBLE);
@@ -147,6 +158,7 @@ public class ParentLogin extends AppCompatActivity {
     }
     void init()
     {
+        preferences = getSharedPreferences("state", MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
         signUpTV = findViewById(R.id.signupTV);
         forgetTV = findViewById(R.id.ForgetTV);

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="HomeActivity.ParentHomeActivity.ParentDetailActivity"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        style="?actionBarStyle"
+        android:id="@+id/userdetail"
+        android:background="#673AB7"
+        app:title="User Details"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_marginTop="50dp"
+        android:layout_height="200dp"
+        app:cardCornerRadius="150dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:background="#ffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile1"
+            android:id="@+id/profilepic"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/edit"
+            android:backgroundTint="#89D8FB"
+            android:id="@+id/editpic"
+            android:layout_gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="60dp"
+            />
+    </androidx.cardview.widget.CardView>
+
+
+    <EditText
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter the Name"
+        android:inputType="textPersonName"
+        android:id="@+id/username"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter email"
+        android:id="@+id/emailid"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Phone no"
+        android:id="@+id/userphone"
+        android:inputType="phone"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/spinneruserbloodtype"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textSize="20dp"
+        android:id="@+id/submitbutton"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>
