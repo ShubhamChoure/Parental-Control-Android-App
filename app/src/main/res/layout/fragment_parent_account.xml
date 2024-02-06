@@ -2,11 +2,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="BottomNavigation.ParentNavigation.ParentAccount">
-    
-   <Button
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:id="@+id/ParentLogOut"
-       android:text="Log Out"></Button>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+   <androidx.appcompat.widget.Toolbar
+       android:layout_width="match_parent"
+       android:layout_height="?actionBarSize"
+       android:background="#8934BD"
+       android:padding="5dp"
+       app:title="ACCOUNT PARENT INFO"
+       app:titleTextColor="#FFFFFF"
+       android:textAlignment="center"
+       android:textSize="20dp"
+       android:textStyle="bold" />
+
+       <androidx.cardview.widget.CardView
+           android:layout_marginTop="25dp"
+           android:layout_width="150dp"
+           android:layout_height="150dp"
+           app:cardCornerRadius="250dp"
+           android:layout_gravity="center">
+           <ImageView
+               android:layout_width="150dp"
+               android:layout_height="150dp"
+               android:src="@drawable/accoutntimg"
+               android:scaleType="centerCrop"/>
+       </androidx.cardview.widget.CardView>
+        <TextView
+            android:text="name parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+       <TextView
+           android:text="mobile no"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </TextView>
+       <TextView
+           android:text="parent email"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </TextView>
+       <TextView
+           android:text="child email"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </TextView>
+       <TextView
+           android:text="blood"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </TextView>
+       <TextView
+           android:text="any other you"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </TextView>
+       <!--' add in tool bar '-->
+<!--      <Button-->
+<!--          android:layout_width="wrap_content"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          android:id="@+id/ParentLogOut"-->
+<!--          android:text="Log Out">-->
+<!--      </Button>-->
+   </LinearLayout>
 </FrameLayout>

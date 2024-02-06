@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item
     android:id="@+id/searchViewChildOption"
-    android:icon="@drawable/baseline_manage_search_24"
+    android:icon="@drawable/baseline_search_24"
     android:title="Search App"
     app:showAsAction="ifRoom|collapseActionView"
     app:actionViewClass="android.widget.SearchView">
