@@ -19,7 +19,7 @@
             android:textSize="20dp"
             app:titleTextColor="#FFFFFF"
             android:textStyle="bold"
-            android:background="#445FD2"
+            android:background="#8934BD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
