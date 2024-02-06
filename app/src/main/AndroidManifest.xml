@@ -5,18 +5,17 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +27,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JSPM"
         tools:targetApi="31">
+        <activity
+            android:name="HomeActivity.ChildeHomeActivity.ChildDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name="HomeActivity.ParentHomeActivity.ParentDetailActivity"
+            android:exported="false" />
         <activity
             android:name="Locks.PopUpPatternLock"
             android:exported="false" />
@@ -73,10 +78,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="BottomNavigation.ChildeNavigation.LocationUploadService"
-            android:foregroundServiceType="location"/>
-        <service android:name="BottomNavigation.ParentNavigation.ParentListAdapter.GeofenceService"
-            android:foregroundServiceType="dataSync"/>
+
+        <service
+            android:name="BottomNavigation.ChildeNavigation.LocationUploadService"
+            android:foregroundServiceType="location" />
+        <service
+            android:name="BottomNavigation.ParentNavigation.ParentListAdapter.GeofenceService"
+            android:foregroundServiceType="dataSync" />
     </application>
 
 </manifest>
