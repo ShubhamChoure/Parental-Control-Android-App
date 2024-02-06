@@ -165,8 +165,18 @@ public class ParentAppLock extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String childName = document.getString("LinkChild");
                         appListToolbar.setTitle(childName + " Apps");
-
+                        setToolbarTitle(childName);
                     }
+                }
+            }
+        });
+    }
+    private void setToolbarTitle(String childName) {
+        db.collection("User").whereEqualTo("Email",childName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot document: task.getResult()){
+                    appListToolbar.setTitle(document.getString("Name")+"'s Apps");
                 }
             }
         });
