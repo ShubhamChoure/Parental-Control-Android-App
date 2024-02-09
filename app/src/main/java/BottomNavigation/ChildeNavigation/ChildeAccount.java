@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jspm.MainActivity;
 import com.example.jspm.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
 
@@ -37,7 +40,9 @@ public class ChildeAccount extends Fragment {
 
 
     Button logoutBtn;
-
+    TextView acNameTV,mailAddressTV,mobileNoTV,bloodGroupTV,childMailAddressTV,childNameTV;
+    ImageView profilePicIV;
+    FirebaseFirestore db;
     public ChildeAccount() {
         // Required empty public constructor
     }
@@ -99,5 +104,14 @@ public class ChildeAccount extends Fragment {
     void init()
     {
         logoutBtn = getView().findViewById(R.id.ChildFragmentLogoutBtn);
+        db = FirebaseFirestore.getInstance();
+
+        acNameTV = getView().findViewById(R.id.parentACName);
+        mailAddressTV = getView().findViewById(R.id.mailParentACTV);
+        mobileNoTV = getView().findViewById(R.id.mobileNoParentACTV);
+        bloodGroupTV = getView().findViewById(R.id.bloodParentACTV);
+        childMailAddressTV = getView().findViewById(R.id.childMailParentACTV);
+        childNameTV = getView().findViewById(R.id.childNameParentACTV);
+        profilePicIV = getView().findViewById(R.id.profilePicParentIV);
     }
 }

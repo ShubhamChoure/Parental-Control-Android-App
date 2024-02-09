@@ -29,7 +29,8 @@
                android:layout_width="150dp"
                android:layout_height="150dp"
                android:src="@drawable/accoutntimg"
-               android:scaleType="centerCrop"/>
+               android:scaleType="centerCrop"
+               android:id="@+id/profilePicParentIV"/>
        </androidx.cardview.widget.CardView>
 
        <LinearLayout
@@ -89,7 +90,7 @@
            <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:text="Example@gmail.com"
+               android:text="B"
                android:id="@+id/bloodParentACTV"/>
        </LinearLayout>
        <LinearLayout
@@ -129,7 +130,9 @@
           android:layout_height="wrap_content"
           android:id="@+id/ParentLogOut"
           android:text="Log Out"
-          android:layout_marginTop="10dp">
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:layout_gravity="center">
       </Button>
    </LinearLayout>
 </FrameLayout>
