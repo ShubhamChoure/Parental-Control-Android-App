@@ -140,11 +140,8 @@ public class ChildeAccount extends Fragment {
         db.collection("Relation").whereEqualTo("LinkChild",mAuth.getCurrentUser().getEmail().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-
                 childMailAddressTV.setText(task.getResult().getDocuments().get(0).getString("Mail"));
                 setChildName();
-
             }
         });
     }

@@ -28,6 +28,9 @@
         android:theme="@style/Theme.JSPM"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name="HomeActivity.ChildeHomeActivity.ChildDetailActivity"
             android:exported="false" />
         <activity
@@ -70,7 +73,7 @@
             android:name="Login.ParentLogin"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
