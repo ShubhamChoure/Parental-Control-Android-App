@@ -95,6 +95,6 @@ public class ParentAccount extends Fragment {
     void init()
     {
         auth = FirebaseAuth.getInstance();
-        logOutBtn = getView().findViewById(R.id.ParentLogOut);
+//        logOutBtn = getView().findViewById(R.id.ParentLogOut);
     }
 }
