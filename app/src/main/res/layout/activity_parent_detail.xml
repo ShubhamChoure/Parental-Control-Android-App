@@ -4,32 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="HomeActivity.ParentHomeActivity.ParentDetailActivity"
-    android:orientation="vertical">
+    tools:context="HomeActivity.ChildeHomeActivity.ChildDetailActivity"
+    android:orientation="vertical"
+    android:background="#F3F3F3">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         style="?actionBarStyle"
         android:id="@+id/userdetail"
-        android:background="#673AB7"
+        android:background="#8934BD"
+        app:titleTextColor="#FFFFFF"
         app:title="User Details"/>
     <androidx.cardview.widget.CardView
         android:layout_width="200dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_height="200dp"
         app:cardCornerRadius="150dp"
         android:layout_gravity="center">
 
-        <ImageView
-            android:background="#ffff"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile1"
-            android:id="@+id/profilepic"
-            />
+        <androidx.cardview.widget.CardView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/profilepic"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/accoutntimg"
+                android:scaleType="centerCrop"/>
+        </androidx.cardview.widget.CardView>
+
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="50dp"
@@ -45,46 +52,65 @@
 
 
     <EditText
+        android:padding="15dp"
+        android:background="@drawable/editbutton"
+        android:drawableLeft="@drawable/baseline_person_24"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:hint="Enter the Name"
+        android:hint="  Enter the Name"
         android:inputType="textPersonName"
         android:id="@+id/username"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
 
     <EditText
+        android:padding="15dp"
+        android:background="@drawable/editbutton"
+        android:drawableLeft="@drawable/baseline_contact_mail_24"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:hint="Enter email"
+        android:hint="  Enter email"
         android:id="@+id/emailid"
         android:inputType="textEmailAddress"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
 
     <EditText
+        android:padding="15dp"
+        android:background="@drawable/editbutton"
+        android:drawableLeft="@drawable/baseline_phone_iphone_24"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:hint="Enter Phone no"
+        android:hint=" Enter Phone no"
         android:id="@+id/userphone"
         android:inputType="phone"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
 
     <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_gravity="left"
+        android:layout_height="50dp"
+        android:layout_width="160dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:id="@+id/spinneruserbloodtype"
         />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:textSize="20dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/parentsubmitbutton"
+        android:padding="10dp"
+        android:text="SUBMIT"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="30dp"
         android:id="@+id/submitbutton"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
 
 </LinearLayout>

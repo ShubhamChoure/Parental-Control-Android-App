@@ -12,7 +12,7 @@
             android:id="@+id/appListToolbarChild"
             android:layout_width="0dp"
             android:layout_height="?actionBarSize"
-            android:background="#8934BD"
+            android:background="#367CFE"
             android:padding="5dp"
             android:textAlignment="center"
             android:textSize="20dp"
