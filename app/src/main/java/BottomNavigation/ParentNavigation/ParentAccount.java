@@ -120,11 +120,15 @@ public class ParentAccount extends Fragment {
                 bloodGroupTV.setText(task.getResult().getDocuments().get(0).getString("Blood Type"));
 
                 String base64Encoded = task.getResult().getDocuments().get(0).getString("uri");
-                byte[] byteArray = Base64.decode(base64Encoded,Base64.DEFAULT);
+                try {
+                    byte[] byteArray = Base64.decode(base64Encoded, Base64.DEFAULT);
 
-                Drawable imgDrawable = byteArrayToDrawable(byteArray, "Profile Pic");
-                if(imgDrawable!=null){
-                    profilePicIV.setImageDrawable(imgDrawable);
+                    Drawable imgDrawable = byteArrayToDrawable(byteArray, "Profile Pic");
+                    if (imgDrawable != null) {
+                        profilePicIV.setImageDrawable(imgDrawable);
+                    }
+                }catch(Exception e){
+                    Log.e("tag","base64 string is null");
                 }
             }
         });
