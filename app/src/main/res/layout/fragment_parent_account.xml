@@ -7,7 +7,8 @@
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:orientation="vertical">
+       android:orientation="vertical"
+       android:background="#F3F3F3">
    <androidx.appcompat.widget.Toolbar
        android:layout_width="match_parent"
        android:layout_height="?actionBarSize"
@@ -22,17 +23,18 @@
        app:menu="@menu/option_parent_account"/>
 
        <androidx.cardview.widget.CardView
-           android:layout_marginTop="25dp"
+           android:layout_marginTop="35dp"
            android:layout_width="150dp"
            android:layout_height="150dp"
            app:cardCornerRadius="250dp"
            android:layout_gravity="center">
+
            <ImageView
+               android:id="@+id/profilePicParentIV"
                android:layout_width="150dp"
                android:layout_height="150dp"
-               android:src="@drawable/accoutntimg"
                android:scaleType="centerCrop"
-               android:id="@+id/profilePicParentIV"/>
+               android:src="@drawable/accoutntimg" />
        </androidx.cardview.widget.CardView>
 
        <LinearLayout
@@ -40,18 +42,22 @@
            android:layout_height="wrap_content"
            android:orientation="horizontal"
            android:layout_marginBottom="10dp">
+
            <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="Account Holder Name"
+               android:layout_marginTop="20dp"
+               android:layout_marginBottom="20dp"
                android:id="@+id/parentACName"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
                android:gravity="center"
-               android:textStyle="bold"
-               android:textSize="20sp">
+               android:text="Account Holder Name"
+               android:textSize="20sp"
+               android:textStyle="bold">
            </TextView>
        </LinearLayout>
 
        <LinearLayout
+           android:padding="5dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal">
@@ -66,6 +72,7 @@
                android:id="@+id/mailParentACTV"/>
        </LinearLayout>
        <LinearLayout
+           android:padding="5dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal"
@@ -77,10 +84,11 @@
            <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:text="+91 0000000000"
+               android:text="+91 XXXXXXXXXX"
                android:id="@+id/mobileNoParentACTV"/>
        </LinearLayout>
        <LinearLayout
+           android:padding="5dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal"
@@ -96,6 +104,7 @@
                android:id="@+id/bloodParentACTV"/>
        </LinearLayout>
        <LinearLayout
+           android:padding="5dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal"
@@ -112,6 +121,7 @@
        </LinearLayout>
 
        <LinearLayout
+           android:padding="5dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal"
@@ -132,7 +142,7 @@
           android:layout_height="wrap_content"
           android:id="@+id/ParentLogOut"
           android:text="Log Out"
-          android:layout_marginTop="10dp"
+          android:layout_marginTop="20dp"
           android:gravity="center"
           android:layout_gravity="center">
       </Button>
