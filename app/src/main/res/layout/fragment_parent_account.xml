@@ -14,10 +14,12 @@
        android:background="#8934BD"
        android:padding="5dp"
        app:title="Account Info"
+       android:id="@+id/parentAccountToolbar"
        app:titleTextColor="#FFFFFF"
        android:textAlignment="center"
        android:textSize="20dp"
-       android:textStyle="bold" />
+       android:textStyle="bold"
+       app:menu="@menu/option_parent_account"/>
 
        <androidx.cardview.widget.CardView
            android:layout_marginTop="25dp"
