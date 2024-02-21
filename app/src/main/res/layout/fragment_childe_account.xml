@@ -17,8 +17,10 @@
             app:title="Account Info"
             app:titleTextColor="#FFFFFF"
             android:textAlignment="center"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:id="@+id/childAccountToolbar"
+            app:menu="@menu/option_child_account"/>
 
         <androidx.cardview.widget.CardView
             android:layout_marginTop="25dp"

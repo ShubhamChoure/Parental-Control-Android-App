@@ -7,11 +7,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,7 +34,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayInputStream;
 
+import HomeActivity.ChildeHomeActivity.ChildDetailActivity;
 import HomeActivity.ParentHomeActivity.HomeActivity;
+import HomeActivity.ParentHomeActivity.ParentDetailActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +58,8 @@ public class ParentAccount extends Fragment {
 
     FirebaseFirestore db;
     Button logOutBtn;
+
+    Toolbar toolbar;
 
     TextView acNameTV,mailAddressTV,mobileNoTV,bloodGroupTV,childMailAddressTV,childNameTV;
     ImageView profilePicIV;
@@ -100,6 +109,7 @@ public class ParentAccount extends Fragment {
 
         try {
             init();
+            setToolbar();
             logoutUser();
             anandi(); //For setting user details from dataabse
             shubham(); //For setting child name and mail address
@@ -173,6 +183,8 @@ public class ParentAccount extends Fragment {
         childMailAddressTV = getView().findViewById(R.id.childMailParentACTV);
         childNameTV = getView().findViewById(R.id.childNameParentACTV);
         profilePicIV = getView().findViewById(R.id.profilePicParentIV);
+        toolbar = getView().findViewById(R.id.parentAccountToolbar);
+
     }
 
     void logoutUser(){
@@ -190,5 +202,24 @@ public class ParentAccount extends Fragment {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bar);
         Drawable drawable = Drawable.createFromStream(byteArrayInputStream, appName);
         return drawable;
+    }
+
+    void setToolbar(){
+        setHasOptionsMenu(true);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.option_parent_account,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.editInfoParent){
+            Intent intent = new Intent(getContext(), ParentDetailActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -9,10 +9,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayInputStream;
 
+import HomeActivity.ChildeHomeActivity.ChildDetailActivity;
 import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
 
 /**
@@ -49,6 +55,7 @@ public class ChildeAccount extends Fragment {
     private String mParam2;
 
 
+    Toolbar toolbar;
     Button logoutBtn;
     TextView acNameTV,mailAddressTV,mobileNoTV,bloodGroupTV,childMailAddressTV,childNameTV;
     ImageView profilePicIV;
@@ -99,6 +106,7 @@ public class ChildeAccount extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
+        setToolbar();
         anandi(); //For setting user details from dataabse
         shubham(); //For setting child name and mail address
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -170,10 +178,31 @@ public class ChildeAccount extends Fragment {
         childMailAddressTV = getView().findViewById(R.id.parentMailChildACTV);
         childNameTV = getView().findViewById(R.id.parentNameChildACTV);
         profilePicIV = getView().findViewById(R.id.profilePicChildIV);
+        toolbar = getView().findViewById(R.id.childAccountToolbar);
+    }
+
+    void setToolbar(){
+        setHasOptionsMenu(true);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
     }
     Drawable byteArrayToDrawable(byte[] bar, String appName) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bar);
         Drawable drawable = Drawable.createFromStream(byteArrayInputStream, appName);
         return drawable;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.option_child_account,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.editInfoChild){
+            Intent intent = new Intent(getContext(), ChildDetailActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

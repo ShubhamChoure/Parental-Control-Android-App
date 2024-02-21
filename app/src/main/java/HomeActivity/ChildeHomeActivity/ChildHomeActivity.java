@@ -99,4 +99,7 @@ public class ChildHomeActivity extends AppCompatActivity {
             Log.e("6969","Starting Foreground service");
         }
     }
+    public void sucide(){
+        finish();
+    }
 }
