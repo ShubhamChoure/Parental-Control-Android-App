@@ -13,7 +13,7 @@
        android:layout_height="?actionBarSize"
        android:background="#8934BD"
        android:padding="5dp"
-       app:title="ACCOUNT PARENT INFO"
+       app:title="Account Info"
        app:titleTextColor="#FFFFFF"
        android:textAlignment="center"
        android:textSize="20dp"
@@ -29,44 +29,110 @@
                android:layout_width="150dp"
                android:layout_height="150dp"
                android:src="@drawable/accoutntimg"
-               android:scaleType="centerCrop"/>
+               android:scaleType="centerCrop"
+               android:id="@+id/profilePicParentIV"/>
        </androidx.cardview.widget.CardView>
-        <TextView
-            android:text="name parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </TextView>
-       <TextView
-           android:text="mobile no"
+
+       <LinearLayout
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-       </TextView>
-       <TextView
-           android:text="parent email"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_marginBottom="10dp">
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Account Holder Name"
+               android:id="@+id/parentACName"
+               android:gravity="center"
+               android:textStyle="bold"
+               android:textSize="20sp">
+           </TextView>
+       </LinearLayout>
+
+       <LinearLayout
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-       </TextView>
-       <TextView
-           android:text="child email"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Mail Address : "/>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Example@gmail.com"
+               android:id="@+id/mailParentACTV"/>
+       </LinearLayout>
+       <LinearLayout
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-       </TextView>
-       <TextView
-           android:text="blood"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_marginTop="10dp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Mobile No : "/>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="+91 0000000000"
+               android:id="@+id/mobileNoParentACTV"/>
+       </LinearLayout>
+       <LinearLayout
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-       </TextView>
-       <TextView
-           android:text="any other you"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_marginTop="10dp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Blood Group : "/>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="B"
+               android:id="@+id/bloodParentACTV"/>
+       </LinearLayout>
+       <LinearLayout
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-       </TextView>
-       <!--' add in tool bar '-->
-<!--      <Button-->
-<!--          android:layout_width="wrap_content"-->
-<!--          android:layout_height="wrap_content"-->
-<!--          android:id="@+id/ParentLogOut"-->
-<!--          android:text="Log Out">-->
-<!--      </Button>-->
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_marginTop="10dp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Child Mail Address : "/>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Example@gmail.com"
+               android:id="@+id/childMailParentACTV"/>
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_marginTop="10dp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Child Name : "/>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Child Name"
+               android:id="@+id/childNameParentACTV"/>
+       </LinearLayout>
+
+      <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/ParentLogOut"
+          android:text="Log Out"
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:layout_gravity="center">
+      </Button>
    </LinearLayout>
 </FrameLayout>
