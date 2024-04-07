@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayInputStream;
 
+import AboutUs.AboutUs;
 import HomeActivity.ChildeHomeActivity.ChildDetailActivity;
 import HomeActivity.ParentHomeActivity.HomeActivity;
 import HomeActivity.ParentHomeActivity.ParentDetailActivity;
@@ -114,7 +115,7 @@ public class ParentAccount extends Fragment {
             anandi(); //For setting user details from dataabse
             shubham(); //For setting child name and mail address
         }catch (Exception e){
-           Log.e("tag",e.toString());
+            Log.e("tag",e.toString());
         }
     }
 
@@ -152,8 +153,8 @@ public class ParentAccount extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
 
-                        childMailAddressTV.setText(task.getResult().getDocuments().get(0).getString("LinkChild"));
-                        setChildName();
+                childMailAddressTV.setText(task.getResult().getDocuments().get(0).getString("LinkChild"));
+                setChildName();
 
             }
         });
@@ -218,6 +219,9 @@ public class ParentAccount extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.editInfoParent){
             Intent intent = new Intent(getContext(), ParentDetailActivity.class);
+            startActivity(intent);
+        }else if (item.getItemId()==R.id.aboutUsP) {
+            Intent intent = new Intent(getContext(), AboutUs.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

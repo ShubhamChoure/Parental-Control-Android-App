@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayInputStream;
 
+import AboutUs.AboutUs;
 import HomeActivity.ChildeHomeActivity.ChildDetailActivity;
 import HomeActivity.ChildeHomeActivity.ChildHomeActivity;
 
@@ -201,6 +202,9 @@ public class ChildeAccount extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.editInfoChild){
             Intent intent = new Intent(getContext(), ChildDetailActivity.class);
+            startActivity(intent);
+        } else if (item.getItemId()==R.id.aboutUs) {
+            Intent intent = new Intent(getContext(), AboutUs.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
