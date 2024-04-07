@@ -28,6 +28,9 @@
         android:theme="@style/Theme.JSPM"
         tools:targetApi="31">
         <activity
+            android:name="AboutUs.AboutUs"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
