@@ -6,4 +6,9 @@
         android:id="@+id/editInfoParent"
         app:showAsAction="collapseActionView">
     </item>
+    <item
+        android:title="About Us"
+        android:id="@+id/aboutUs"
+        app:showAsAction="collapseActionView">
+    </item>
 </menu>
