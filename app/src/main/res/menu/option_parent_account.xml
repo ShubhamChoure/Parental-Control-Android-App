@@ -8,7 +8,7 @@
     </item>
     <item
         android:title="About Us"
-        android:id="@+id/aboutUs"
+        android:id="@+id/aboutUsP"
         app:showAsAction="collapseActionView">
     </item>
 </menu>

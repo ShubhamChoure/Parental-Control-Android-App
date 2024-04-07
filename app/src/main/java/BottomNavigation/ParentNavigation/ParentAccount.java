@@ -2,22 +2,42 @@ package BottomNavigation.ParentNavigation;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.jspm.MainActivity;
 import com.example.jspm.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.ByteArrayInputStream;
+
+import AboutUs.AboutUs;
+import HomeActivity.ChildeHomeActivity.ChildDetailActivity;
 import HomeActivity.ParentHomeActivity.HomeActivity;
+import HomeActivity.ParentHomeActivity.ParentDetailActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +56,14 @@ public class ParentAccount extends Fragment {
     private String mParam2;
 
     FirebaseAuth auth;
+
+    FirebaseFirestore db;
     Button logOutBtn;
+
+    Toolbar toolbar;
+
+    TextView acNameTV,mailAddressTV,mobileNoTV,bloodGroupTV,childMailAddressTV,childNameTV;
+    ImageView profilePicIV;
 
     public ParentAccount() {
         // Required empty public constructor
@@ -80,7 +107,88 @@ public class ParentAccount extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        init();
+
+        try {
+            init();
+            setToolbar();
+            logoutUser();
+            anandi(); //For setting user details from dataabse
+            shubham(); //For setting child name and mail address
+        }catch (Exception e){
+            Log.e("tag",e.toString());
+        }
+    }
+
+    void anandi() {
+        //For setting user details from dataabse
+
+        db.collection("User").whereEqualTo("Email",auth.getCurrentUser().getEmail().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                acNameTV.setText(task.getResult().getDocuments().get(0).getString("Name"));
+                mailAddressTV.setText(task.getResult().getDocuments().get(0).getString("Email"));
+                mobileNoTV.setText(task.getResult().getDocuments().get(0).getString("Phone No"));
+                bloodGroupTV.setText(task.getResult().getDocuments().get(0).getString("Blood Type"));
+
+                String base64Encoded = task.getResult().getDocuments().get(0).getString("uri");
+                try {
+                    byte[] byteArray = Base64.decode(base64Encoded, Base64.DEFAULT);
+
+                    Drawable imgDrawable = byteArrayToDrawable(byteArray, "Profile Pic");
+                    if (imgDrawable != null) {
+                        profilePicIV.setImageDrawable(imgDrawable);
+                    }
+                }catch(Exception e){
+                    Log.e("tag","base64 string is null");
+                }
+            }
+        });
+
+    }
+
+    void shubham(){
+        //For setting child name and mail address
+        db.collection("Relation").whereEqualTo("Mail",auth.getCurrentUser().getEmail().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+
+                childMailAddressTV.setText(task.getResult().getDocuments().get(0).getString("LinkChild"));
+                setChildName();
+
+            }
+        });
+    }
+
+    void setChildName() {
+        db.collection("User").whereEqualTo("Email",childMailAddressTV.getText().toString().trim()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot document:task.getResult()){
+                    childNameTV.setText(document.getString("Name"));
+                }
+            }
+        });
+    }
+
+    void init()
+    {
+        auth = FirebaseAuth.getInstance();
+        logOutBtn = getView().findViewById(R.id.ParentLogOut);
+        db = FirebaseFirestore.getInstance();
+
+        acNameTV = getView().findViewById(R.id.parentACName);
+        mailAddressTV = getView().findViewById(R.id.mailParentACTV);
+        mobileNoTV = getView().findViewById(R.id.mobileNoParentACTV);
+        bloodGroupTV = getView().findViewById(R.id.bloodParentACTV);
+        childMailAddressTV = getView().findViewById(R.id.childMailParentACTV);
+        childNameTV = getView().findViewById(R.id.childNameParentACTV);
+        profilePicIV = getView().findViewById(R.id.profilePicParentIV);
+        toolbar = getView().findViewById(R.id.parentAccountToolbar);
+
+    }
+
+    void logoutUser(){
         logOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,10 +199,31 @@ public class ParentAccount extends Fragment {
             }
         });
     }
+    Drawable byteArrayToDrawable(byte[] bar, String appName) {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bar);
+        Drawable drawable = Drawable.createFromStream(byteArrayInputStream, appName);
+        return drawable;
+    }
 
-    void init()
-    {
-        auth = FirebaseAuth.getInstance();
-//        logOutBtn = getView().findViewById(R.id.ParentLogOut);
+    void setToolbar(){
+        setHasOptionsMenu(true);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.option_parent_account,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.editInfoParent){
+            Intent intent = new Intent(getContext(), ParentDetailActivity.class);
+            startActivity(intent);
+        }else if (item.getItemId()==R.id.aboutUsP) {
+            Intent intent = new Intent(getContext(), AboutUs.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
